@@ -110,6 +110,8 @@ void BuffItem::changeBuffPos()
         setX(getX()+speed);
         setY(getY()+speed);
         break;
+    default:
+        break;
     }
     changeDirection();
 }
@@ -124,6 +126,8 @@ void BuffItem::changeDirection()
         case DownLeft:
             direction = DownRight;
             break;
+        default:
+            break;
         }
     }
     if (getX()>=LENGTH-boundingRect().width()){
@@ -133,6 +137,8 @@ void BuffItem::changeDirection()
             break;
         case DownRight:
             direction = DownLeft;
+            break;
+        default:
             break;
         }
     }
@@ -144,6 +150,8 @@ void BuffItem::changeDirection()
         case UpRight:
             direction = DownRight;
             break;
+        default:
+            break;
         }
     }
     if (getY()>=HEIGHT-boundingRect().height()){
@@ -153,6 +161,8 @@ void BuffItem::changeDirection()
             break;
         case DownRight:
             direction = UpRight;
+            break;
+        default:
             break;
         }
     }

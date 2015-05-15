@@ -4,7 +4,6 @@
         <file alias="redBullet">images/bullet.png</file>
         <file alias="enemyPlane1">images/enemyPlane1.png</file>
         <file alias="explosion1">images/PSystem2770.png</file>
-        <file alias="laser1">images/laser.png</file>
         <file alias="turnToLaser1">images/changeToLaser.png</file>
         <file alias="turnToLaser">images/changeToLaser1.png</file>
         <file alias="turnToBullet">images/changeToBullet.png</file>
@@ -42,5 +41,9 @@
         <file alias="lightingball4">images/lightingball4.png</file>
         <file alias="lightingball5">images/lightingball5.png</file>
         <file alias="background2">images/bg.png</file>
+        <file alias="laser1">images/laser1.png</file>
+        <file alias="laserBall1">images/laserball1.png</file>
+        <file alias="laser2">images/laser2.png</file>
+        <file alias="laserBall2">images/laserball2.png</file>
     </qresource>
 </RCC>

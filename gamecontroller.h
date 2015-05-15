@@ -62,7 +62,6 @@ private:
 
     QGraphicsScene *scene;
     Plane *plane;
-    int enemyCount;
     int enemyPlaneGroupCount;
     bool enemyPlaneGroupCreating;
     PlayerHP *playerHP;

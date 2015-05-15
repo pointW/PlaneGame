@@ -38,6 +38,8 @@ void Wingman::refreshPos(Direction d)
     case Down:
         setY(getY()+10);
         break;
+    default:
+        break;
     }
 }
 

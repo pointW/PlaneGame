@@ -30,7 +30,7 @@ Plane::Plane(GameController *game)
     visiable = true;
     beatable = false;
 
-    attackType = Bullet;
+    attackType = Laser;
     attackLevel = 1;
     missileLevel = 0;
     unbeatableTimes = 0;
@@ -200,10 +200,7 @@ void Plane::attackWithBullet()
 void Plane::attackWithLaser()
 {
     if (!laserFlag){
-        laser->setX(getX()+(boundingRect().width()-LASERWIDTH)/2);
-        laser->setY(getY()-1000);
         scene->addItem(laser);
-        connect(this, &Plane::playerMoved, laser, &PlayerLaser::refreshPos);
         laserFlag = true;
     }
 }
@@ -216,7 +213,6 @@ void Plane::stopAttack()
         bulletFlag = false;
     }
     if(laserFlag){
-        disconnect(this, &Plane::playerMoved, laser, &PlayerLaser::refreshPos);
         scene->removeItem(laser);
         laserFlag = false;
     }

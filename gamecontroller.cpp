@@ -7,7 +7,6 @@
 GameController::GameController(QGraphicsScene *s, QObject *parent) :
     QObject(parent),
     scene(s),
-    enemyCount(0),
     plane(new Plane(this)),
     enemyPlaneGroupCount(0),
     enemyPlaneGroupCreating(false)

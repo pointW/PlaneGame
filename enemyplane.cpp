@@ -97,6 +97,8 @@ void EnemyPlane::posChange()
             nextDirection = Left;
         }
         break;
+    default:
+        break;
     }
     if (getX()<0-boundingRect().width() || getX()>LENGTH ||
         getY()<0-boundingRect().height() || getY()>HEIGHT){
