@@ -1,0 +1,46 @@
+<RCC>
+    <qresource prefix="/images">
+        <file alias="plane">images/Spaceship.png</file>
+        <file alias="redBullet">images/bullet.png</file>
+        <file alias="enemyPlane1">images/enemyPlane1.png</file>
+        <file alias="explosion1">images/PSystem2770.png</file>
+        <file alias="laser1">images/laser.png</file>
+        <file alias="turnToLaser1">images/changeToLaser.png</file>
+        <file alias="turnToLaser">images/changeToLaser1.png</file>
+        <file alias="turnToBullet">images/changeToBullet.png</file>
+        <file alias="levelUp">images/levelUp.png</file>
+        <file alias="enemyPlane2">images/enemyPlane2.png</file>
+        <file alias="enemyPlane3">images/enemyPlane3.png</file>
+        <file alias="playerMissile">images/missile.png</file>
+        <file alias="addMissile">images/addMissile.png</file>
+        <file alias="playerHP1">images/playerLife1.png</file>
+        <file alias="playerHP2">images/playerLife2.png</file>
+        <file alias="playerLife">images/playerLife.png</file>
+        <file alias="diamond">images/diamond.png</file>
+        <file alias="background">images/background.png</file>
+        <file alias="player1">images/000.png</file>
+        <file alias="player2">images/001.png</file>
+        <file alias="player3">images/002.png</file>
+        <file alias="player4">images/003.png</file>
+        <file alias="player5">images/004.png</file>
+        <file alias="playerSuper3">images/005.png</file>
+        <file alias="playerSuper4">images/006.png</file>
+        <file alias="playerSuper5">images/007.png</file>
+        <file alias="playerSuper2">images/0066.png</file>
+        <file alias="playerSuper1">images/0077.png</file>
+        <file alias="transform1">images/transform1.png</file>
+        <file alias="transform2">images/transform2.png</file>
+        <file alias="transform3">images/transform3.png</file>
+        <file alias="transform4">images/transform4.png</file>
+        <file alias="transform5">images/transform5.png</file>
+        <file alias="transform6">images/transform6.png</file>
+        <file alias="wingmanL">images/wingmanL.png</file>
+        <file alias="wingmanR">images/wingmanR.png</file>
+        <file alias="lightingball1">images/lightingball1.png</file>
+        <file alias="lightingball2">images/lightingball2.png</file>
+        <file alias="lightingball3">images/lightingball3.png</file>
+        <file alias="lightingball4">images/lightingball4.png</file>
+        <file alias="lightingball5">images/lightingball5.png</file>
+        <file alias="background2">images/bg.png</file>
+    </qresource>
+</RCC>
