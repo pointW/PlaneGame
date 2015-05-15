@@ -45,5 +45,7 @@
         <file alias="laserBall1">images/laserball1.png</file>
         <file alias="laser2">images/laser2.png</file>
         <file alias="laserBall2">images/laserball2.png</file>
+        <file alias="laser3">images/laser3.png</file>
+        <file alias="laserBall3">images/laserball3.png</file>
     </qresource>
 </RCC>

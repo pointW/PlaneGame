@@ -65,6 +65,7 @@ signals:
     void playerDestroyed(Plane *plane);
     void getScore(int a);
     void playerMoved(Direction d);
+    void levelUp(int l);
 
 private:
     void handleKeyPressed(QKeyEvent *event);

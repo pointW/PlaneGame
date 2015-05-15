@@ -14,6 +14,7 @@ public:
     LaserMain(Plane *plane);
 public slots:
     void moveLaser();
+    void levelUp(int l);
 private:
     QPixmap *image;
     int y;
@@ -26,6 +27,7 @@ public:
     LaserBall(Plane *plane);
 public slots:
     void ballRotation();
+    void levelUp(int l);
 private:
     int angle;
 };
@@ -39,11 +41,11 @@ public:
 
 public slots:
     void refreshPos(Direction d);
-//    void moveLaser();
-
+    void levelUp(int l);
 private:
     LaserMain *laser;
     LaserBall *ball;
+    int level;
 };
 
 

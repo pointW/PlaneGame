@@ -302,6 +302,7 @@ void Plane::playerCollisions()
             case LevelUp:
                 if(attackLevel<4){
                     attackLevel++;
+                    emit levelUp(attackLevel);
                 }
                 if(attackFlag){
                     stopAttack();
