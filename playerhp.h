@@ -13,7 +13,7 @@ public:
     PlayerHP(GameController *game);
     ~PlayerHP();
 
-    void setLife(int a);
+    void setHP(int a);
     void playerDied();
     void reset();
 

@@ -11,6 +11,7 @@
 #define WINGMANWIDTH 63
 #define LIGHTINGBALLWIDTH 30
 #define PLAYERWIDTH 92
+#define ENEMYBULLET1WIDTH 30
 
 enum GameObjectsData {
     GD_Type
@@ -24,7 +25,8 @@ enum GameObjectTypes {
     GO_PlayerLaser,
     GO_BuffItem,
     GO_PlayerMissile,
-    GO_PlayerLightingBall
+    GO_PlayerLightingBall,
+    GO_EnemyBoss
 };
 
 enum BuffType {

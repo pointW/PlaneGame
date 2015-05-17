@@ -21,7 +21,7 @@ PlayerHP::~PlayerHP()
     delete redPixmap;
 }
 
-void PlayerHP::setLife(int a)
+void PlayerHP::setHP(int a)
 {
     red->setPixmap(redPixmap->copy(0, 0, a-4, 20-4));
 }

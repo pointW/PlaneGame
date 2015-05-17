@@ -20,6 +20,7 @@
 #include "playerlife.h"
 #include "background.h"
 #include "timer.h"
+#include "enemyboss.h"
 
 
 class Plane;

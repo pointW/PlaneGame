@@ -97,7 +97,8 @@ GameController::~GameController()
 
 void GameController::resume()
 {
-    connect(Timer::getTimer1(), SIGNAL(timeout()), this, SLOT(createEnemyPlane()));
+//    connect(Timer::getTimer1(), SIGNAL(timeout()), this, SLOT(createEnemyPlane()));
+    scene->addItem(new EnemyBoss(1, "enemy0", this));
 }
 
 void GameController::addEnemy(int a)
@@ -174,7 +175,7 @@ void GameController::refreshPlayerHP(int a)
     if (a<=0){
         playerHP->playerDied();
     }
-    playerHP->setLife(a);
+    playerHP->setHP(a);
 }
 
 void GameController::enemyDestroyed(EnemyPlane *enemy)
