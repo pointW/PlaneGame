@@ -65,8 +65,8 @@ void EnemyPlane::move()
 
 void EnemyPlane::posChangeDown()
 {
-    setY(getY()+speed);
-    if (getY()>HEIGHT){
+    setY(y()+speed);
+    if (y()>HEIGHT){
         deleteLater();
     }
 }
@@ -75,7 +75,7 @@ void EnemyPlane::posChange()
 {
     switch(direction){
     case Down:
-        setY(getY()+speed);
+        setY(y()+speed);
         downTimes++;
         if (downTimes == 20){
             direction = nextDirection;
@@ -83,16 +83,16 @@ void EnemyPlane::posChange()
         break;
     case Left:
         downTimes = 0;
-        setX(getX()-speed);
-        if (getX()<=0){
+        setX(x()-speed);
+        if (x()<=0){
             direction = Down;
             nextDirection = Right;
         }
         break;
     case Right:
         downTimes = 0;
-        setX(getX()+speed);
-        if (getX()>=LENGTH-80){
+        setX(x()+speed);
+        if (x()>=LENGTH-80){
             direction = Down;
             nextDirection = Left;
         }
@@ -100,8 +100,8 @@ void EnemyPlane::posChange()
     default:
         break;
     }
-    if (getX()<0-boundingRect().width() || getX()>LENGTH ||
-        getY()<0-boundingRect().height() || getY()>HEIGHT){
+    if (x()<0-boundingRect().width() || x()>LENGTH ||
+        y()<0-boundingRect().height() || y()>HEIGHT){
         deleteLater();
     }
 }

@@ -29,26 +29,26 @@ void PlayerBullet::move()
 {
     switch(direction){
     case 1:
-        setX(getX() - (20*0.38));
-        setY(getY() - (20*0.92));
+        setX(x() - (20*0.38));
+        setY(y() - (20*0.92));
         break;
     case 5:
-        setX(getX() + (20*0.38));
-        setY(getY() - (20*0.92));
+        setX(x() + (20*0.38));
+        setY(y() - (20*0.92));
         break;
     case 2:
-        setX(getX() - (20*0.19));
-        setY(getY() - (20*0.98));
+        setX(x() - (20*0.19));
+        setY(y() - (20*0.98));
         break;
     case 4:
-        setX(getX() + (20*0.19));
-        setY(getY() - (20*0.98));
+        setX(x() + (20*0.19));
+        setY(y() - (20*0.98));
         break;
     case 3:
-        setY(getY() - 20);
+        setY(y() - 20);
     }
-    if (getX()<0-boundingRect().width() || getX()>LENGTH ||
-        getY()<0-boundingRect().height() || getY()>HEIGHT){
+    if (x()<0-boundingRect().width() || x()>LENGTH ||
+        y()<0-boundingRect().height() || y()>HEIGHT){
         deleteLater();
     }
 }

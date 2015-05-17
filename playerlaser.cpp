@@ -60,8 +60,8 @@ LaserMain::LaserMain(Plane *plane)
     setParent(plane);
     setZValue(1);
     setPixmap(image->copy(0, y, 90, 800));
-    setX(plane->getX()+(PLAYERWIDTH-LASERWIDTH)/2);
-    setY(plane->getY()-800-LASERBALLWIDTH/2);
+    setX(plane->x()+(PLAYERWIDTH-LASERWIDTH)/2);
+    setY(plane->y()-800-LASERBALLWIDTH/2);
     connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(moveLaser()));
     connect(plane, &Plane::levelUp, this, &LaserMain::levelUp);
 }
@@ -100,8 +100,8 @@ LaserBall::LaserBall(Plane *plane)
     setParent(plane);
     setPixmap(QPixmap(":/images/laserBall2"));
     setZValue(2);
-    setX(plane->getX()+(PLAYERWIDTH-LASERBALLWIDTH)/2);
-    setY(plane->getY()-LASERBALLWIDTH);
+    setX(plane->x()+(PLAYERWIDTH-LASERBALLWIDTH)/2);
+    setY(plane->y()-LASERBALLWIDTH);
     angle = 0;
     setTransformOriginPoint(LASERBALLWIDTH/2, LASERBALLWIDTH/2);
     connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(ballRotation()));

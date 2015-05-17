@@ -55,8 +55,8 @@ void PlayerMissile::changeAngleAndPos()
     }
     if (target!=-1){
         FlyItem *t = parent()->parent()->findChild<FlyItem *>("enemy"+QString::number(target, 10));
-        dx = getY() - (t->getY()+t->boundingRect().height()/2);
-        dy = getX() - (t->getX()+t->boundingRect().width()/2);
+        dx = y() - (t->y()+t->boundingRect().height()/2);
+        dy = x() - (t->x()+t->boundingRect().width()/2);
         double a = (180/3.14)*atan2(dy, dx);
         if (a<0){
             a+=360;
@@ -77,16 +77,16 @@ void PlayerMissile::changeAngleAndPos()
         }
     }
     changePos();
-    if (getX()<0-boundingRect().width() || getX()>LENGTH ||
-        getY()<0-boundingRect().height() || getY()>HEIGHT){
+    if (x()<0-boundingRect().width() || x()>LENGTH ||
+        y()<0-boundingRect().height() || y()>HEIGHT){
         deleteLater();
     }
 }
 
 void PlayerMissile::changePos()
 {
-    setX(getX()-10*sin(angle*(3.14/180)));
-    setY(getY()-10*cos(angle*(3.14/180)));
+    setX(x()-10*sin(angle*(3.14/180)));
+    setY(y()-10*cos(angle*(3.14/180)));
 }
 
 void PlayerMissile::aimTarget()
@@ -94,8 +94,8 @@ void PlayerMissile::aimTarget()
     for (int i = 0; i<=100; i++){
         target = i;
         if (parent()->parent()->findChild<FlyItem *>("enemy"+QString::number(target, 10))!=0){
-            dx = getY()-parent()->parent()->findChild<FlyItem *>("enemy"+QString::number(target, 10))->getY();
-            dy = getX()-parent()->parent()->findChild<FlyItem *>("enemy"+QString::number(target, 10))->getX();
+            dx = y()-parent()->parent()->findChild<FlyItem *>("enemy"+QString::number(target, 10))->y();
+            dy = x()-parent()->parent()->findChild<FlyItem *>("enemy"+QString::number(target, 10))->x();
             aimTimes++;
             break;
         }

@@ -27,16 +27,16 @@ void Wingman::refreshPos(Direction d)
 {
     switch(d){
     case Left:
-        setX(getX()-10);
+        setX(x()-10);
         break;
     case Right:
-        setX(getX()+10);
+        setX(x()+10);
         break;
     case Up:
-        setY(getY()-10);
+        setY(y()-10);
         break;
     case Down:
-        setY(getY()+10);
+        setY(y()+10);
         break;
     default:
         break;
@@ -45,5 +45,5 @@ void Wingman::refreshPos(Direction d)
 
 void Wingman::shootLightingBall()
 {
-    QGraphicsItem::scene()->addItem(new PlayerLightingBall(getX()+(boundingRect().width()-LIGHTINGBALLWIDTH)/2, getY()+60, this));
+    QGraphicsItem::scene()->addItem(new PlayerLightingBall(x()+(boundingRect().width()-LIGHTINGBALLWIDTH)/2, y()+60, this));
 }

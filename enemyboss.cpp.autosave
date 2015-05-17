@@ -72,8 +72,7 @@ void EnemyBoss::bossCollisions()
         }
         else if (collidingItem->data(GD_Type) == GO_PlayerMissile){
             HP-=20;
-            delete collidingItem;
-//            dynamic_cast<PlayerMissile *>(collidingItem)->deleteLater();
+            dynamic_cast<PlayerMissile *>(collidingItem)->deleteLater();
         }
         else if (collidingItem->data(GD_Type) == GO_PlayerLightingBall){
             HP-=20;

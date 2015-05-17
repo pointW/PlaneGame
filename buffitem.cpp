@@ -85,8 +85,8 @@ void BuffItem::changeBuffPos()
 //            aimedPlayer = true;
 //            double dx,dy = 0;
 //            if (parent()->findChild<Plane *>("player")!=0){
-//                dx = getY()-parent()->findChild<Plane *>("player")->getY();
-//                dy = getX()-parent()->findChild<Plane *>("player")->getX();
+//                dx = y()-parent()->findChild<Plane *>("player")->y();
+//                dy = x()-parent()->findChild<Plane *>("player")->x();
 //                angle = (180/3.14)*atan2(dy, dx);
 //            }
 //        }
@@ -95,20 +95,20 @@ void BuffItem::changeBuffPos()
 //    }
     switch(direction){
     case UpLeft:
-        setX(getX()-speed);
-        setY(getY()-speed);
+        setX(x()-speed);
+        setY(y()-speed);
         break;
     case UpRight:
-        setX(getX()+speed);
-        setY(getY()-speed);
+        setX(x()+speed);
+        setY(y()-speed);
         break;
     case DownLeft:
-        setX(getX()-speed);
-        setY(getY()+speed);
+        setX(x()-speed);
+        setY(y()+speed);
         break;
     case DownRight:
-        setX(getX()+speed);
-        setY(getY()+speed);
+        setX(x()+speed);
+        setY(y()+speed);
         break;
     default:
         break;
@@ -118,7 +118,7 @@ void BuffItem::changeBuffPos()
 
 void BuffItem::changeDirection()
 {
-    if (getX()<=0){
+    if (x()<=0){
         switch(direction){
         case UpLeft:
             direction = UpRight;
@@ -130,7 +130,7 @@ void BuffItem::changeDirection()
             break;
         }
     }
-    if (getX()>=LENGTH-boundingRect().width()){
+    if (x()>=LENGTH-boundingRect().width()){
         switch(direction){
         case UpRight:
             direction = UpLeft;
@@ -142,7 +142,7 @@ void BuffItem::changeDirection()
             break;
         }
     }
-    if (getY()<=0){
+    if (y()<=0){
         switch(direction){
         case UpLeft:
             direction = DownLeft;
@@ -154,7 +154,7 @@ void BuffItem::changeDirection()
             break;
         }
     }
-    if (getY()>=HEIGHT-boundingRect().height()){
+    if (y()>=HEIGHT-boundingRect().height()){
         switch(direction){
         case DownLeft:
             direction = UpLeft;
@@ -197,20 +197,20 @@ BuffType BuffItem::getBuffType()
 //    if(parent()->findChild<Plane *>("player")==0){
 //        return 1000;
 //    }
-//    return sqrt(pow(parent()->findChild<Plane *>("player")->getX()-getX(),2)+
-//                pow(parent()->findChild<Plane *>("player")->getY()-getY(),2));
+//    return sqrt(pow(parent()->findChild<Plane *>("player")->x()-x(),2)+
+//                pow(parent()->findChild<Plane *>("player")->y()-y(),2));
 //}
 
 //void BuffItem::flyToPlayer()
 //{
 //    if (parent()->findChild<Plane *>("player")==0){
-//        setX(getX()-10*sin(angle*(3.14/180)));
-//        setY(getY()-10*cos(angle*(3.14/180)));
+//        setX(x()-10*sin(angle*(3.14/180)));
+//        setY(y()-10*cos(angle*(3.14/180)));
 //        return;
 //    }
 //    double dx, dy, x1, x2, y1, y2 = 0;
-//    dx = getY()-parent()->findChild<Plane *>("player")->getY();
-//    dy = getX()-parent()->findChild<Plane *>("player")->getX();
+//    dx = y()-parent()->findChild<Plane *>("player")->y();
+//    dy = x()-parent()->findChild<Plane *>("player")->x();
 //    double a = (180/3.14)*atan2(dy, dx);
 //    if (a<0){
 //        a+=360;
@@ -225,10 +225,10 @@ BuffType BuffItem::getBuffType()
 //    else if(x1*y2-x2*y1<0){
 //        angle-=5;
 //    }
-//    setX(getX()-20*sin(angle*(3.14/180)));
-//    setY(getY()-20*cos(angle*(3.14/180)));
-//    if (getX()<0-50 || getX()>LENGTH+50 ||
-//        getY()<0-50 || getY()>HEIGHT+50){
+//    setX(x()-20*sin(angle*(3.14/180)));
+//    setY(y()-20*cos(angle*(3.14/180)));
+//    if (x()<0-50 || x()>LENGTH+50 ||
+//        y()<0-50 || y()>HEIGHT+50){
 //        deleteLater();
 //    }
 //}

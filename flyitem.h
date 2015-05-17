@@ -22,16 +22,9 @@ public:
     FlyItem();
     ~FlyItem();
 
-    int getX();
-    int getY();
-    void setX(int x);
-    void setY(int y);
-
     int getRandomNumber(int max);
 
 protected:
-    int posX;
-    int posY;
     QGraphicsScene *scene;
 };
 

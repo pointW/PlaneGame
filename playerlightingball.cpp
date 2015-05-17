@@ -56,8 +56,8 @@ void PlayerLightingBall::changeImage()
 void PlayerLightingBall::changePos()
 {
     if (aimTimes>=3){
-        setX(getX()-speed*sin(angle*(3.14/180)));
-        setY(getY()-speed*cos(angle*(3.14/180)));
+        setX(x()-speed*sin(angle*(3.14/180)));
+        setY(y()-speed*cos(angle*(3.14/180)));
         return;
     }
     else if (parent()->parent()->parent()->findChild<EnemyPlane *>("enemy"+QString::number(target, 10))==0)
@@ -65,8 +65,8 @@ void PlayerLightingBall::changePos()
         aimTarget();
     }
     if (target!=-1){
-        dx = getY() - parent()->parent()->parent()->findChild<EnemyPlane *>("enemy"+QString::number(target, 10))->getY();
-        dy = getX() - parent()->parent()->parent()->findChild<EnemyPlane *>("enemy"+QString::number(target, 10))->getX();
+        dx = y() - parent()->parent()->parent()->findChild<EnemyPlane *>("enemy"+QString::number(target, 10))->y();
+        dy = x() - parent()->parent()->parent()->findChild<EnemyPlane *>("enemy"+QString::number(target, 10))->x();
         double a = (180/3.14)*atan2(dy, dx);
         if (a<0){
             a+=360;
@@ -85,10 +85,10 @@ void PlayerLightingBall::changePos()
             }
         }
     }
-    setX(getX()-speed*sin(angle*(3.14/180)));
-    setY(getY()-speed*cos(angle*(3.14/180)));
-    if (getX()<0-boundingRect().width() || getX()>LENGTH ||
-        getY()<0-boundingRect().height() || getY()>HEIGHT){
+    setX(x()-speed*sin(angle*(3.14/180)));
+    setY(y()-speed*cos(angle*(3.14/180)));
+    if (x()<0-boundingRect().width() || x()>LENGTH ||
+        y()<0-boundingRect().height() || y()>HEIGHT){
         deleteLater();
     }
 }
@@ -98,8 +98,8 @@ void PlayerLightingBall::aimTarget()
     for (int i = 0; i<=100; i++){
         target = i;
         if (parent()->parent()->parent()->findChild<EnemyPlane *>("enemy"+QString::number(target, 10))!=0){
-            dx = getY() - parent()->parent()->parent()->findChild<EnemyPlane *>("enemy"+QString::number(target, 10))->getY();
-            dy = getX() - parent()->parent()->parent()->findChild<EnemyPlane *>("enemy"+QString::number(target, 10))->getX();
+            dx = y() - parent()->parent()->parent()->findChild<EnemyPlane *>("enemy"+QString::number(target, 10))->y();
+            dy = x() - parent()->parent()->parent()->findChild<EnemyPlane *>("enemy"+QString::number(target, 10))->x();
             aimTimes++;
             break;
         }

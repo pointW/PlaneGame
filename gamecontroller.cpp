@@ -97,8 +97,8 @@ GameController::~GameController()
 
 void GameController::resume()
 {
-//    connect(Timer::getTimer1(), SIGNAL(timeout()), this, SLOT(createEnemyPlane()));
-    scene->addItem(new EnemyBoss(1, "enemy0", this));
+    connect(Timer::getTimer1(), SIGNAL(timeout()), this, SLOT(createEnemyPlane()));
+//    scene->addItem(new EnemyBoss(1, "enemy0", this));
 }
 
 void GameController::addEnemy(int a)
@@ -181,33 +181,33 @@ void GameController::refreshPlayerHP(int a)
 void GameController::enemyDestroyed(EnemyPlane *enemy)
 {
     score->addScore(enemy->getScore());
-    scene->addItem(new Explosion(enemy->getX()-10, enemy->getY()-10, this));
+    scene->addItem(new Explosion(enemy->x()-10, enemy->y()-10, this));
     switch(getRandomNumber(30)){
     case 0:
         if (plane->getAttackType()!=Laser){
-            scene->addItem(new BuffItem(TurnToLaser, enemy->getX(), enemy->getY(), this));
+            scene->addItem(new BuffItem(TurnToLaser, enemy->x(), enemy->y(), this));
         }
         break;
     case 1:
         if (plane->getAttackType()!=Bullet){
-            scene->addItem(new BuffItem(TurnToBullet, enemy->getX(), enemy->getY(), this));
+            scene->addItem(new BuffItem(TurnToBullet, enemy->x(), enemy->y(), this));
         }
         break;
     case 3:
-        scene->addItem(new BuffItem(LevelUp, enemy->getX(), enemy->getY(), this));
+        scene->addItem(new BuffItem(LevelUp, enemy->x(), enemy->y(), this));
         break;
     case 4:
-        scene->addItem(new BuffItem(AddMissile, enemy->getX(), enemy->getY(), this));
+        scene->addItem(new BuffItem(AddMissile, enemy->x(), enemy->y(), this));
         break;
     case 5:case 6:case 7:case 8:case 9:case 10:case 11:
-        scene->addItem(new BuffItem(Diamond, enemy->getX(), enemy->getY(), this));
+        scene->addItem(new BuffItem(Diamond, enemy->x(), enemy->y(), this));
         break;
     }
 }
 
 void GameController::playerDestroyed(Plane *plane)
 {
-    scene->addItem(new Explosion(plane->getX()-10, plane->getY()-10, this));
+    scene->addItem(new Explosion(plane->x()-10, plane->y()-10, this));
     playerLife->decreaseLife();
     if (playerLife->getLife()>0){
         connect(Timer::getTimer1(), SIGNAL(timeout()), this, SLOT(createNewPlane()));
