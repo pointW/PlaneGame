@@ -17,19 +17,22 @@ class EnemyBoss:public FlyItem
 public:
     EnemyBoss(int a, QString name, GameController *game);
     ~EnemyBoss();
-    int maxHP;
+    double maxHP;
 
 public slots:
     void posChangeDown();
+    void moveHorizontally();
     void bossCollisions();
     void attack1();
     void attackWithBullet1();
     void stopAttackWithBullet1();
 
+
 private:
-    int HP;
+    double HP;
     BossHP *bossHP;
     QList<QGraphicsItem*> collisions;
+    Direction d;
 };
 
 #endif // ENEMYBOSS_H

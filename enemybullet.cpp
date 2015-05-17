@@ -26,8 +26,8 @@ void EnemyBullet::move()
 {
     QGraphicsItem::setX(x()+5*cos(angle*(3.14/180)));
     QGraphicsItem::setY(y()+5*sin(angle*(3.14/180)));
-    if (getX()<0-boundingRect().width() || getX()>LENGTH ||
-        getY()<0-boundingRect().height() || getY()>HEIGHT){
+    if (x()<0-boundingRect().width() || x()>LENGTH ||
+        y()<0-boundingRect().height() || y()>HEIGHT){
         deleteLater();
     }
 }

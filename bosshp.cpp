@@ -22,7 +22,7 @@ BossHP::~BossHP()
 
 }
 
-void BossHP::setHP(int a)
+void BossHP::setHP(double HP)
 {
-    red->setPixmap(redPixmap.copy(0, 0, a/max-4, 20-4));
+    red->setPixmap(redPixmap.copy(0, 0, 500*(HP/max)-4, 20-4));
 }

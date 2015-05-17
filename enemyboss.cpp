@@ -18,6 +18,7 @@ EnemyBoss::EnemyBoss(int a, QString name, GameController *game)
     setY(0);
     connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(posChangeDown()));
     bossHP = NULL;
+    d = Left;
 }
 
 EnemyBoss::~EnemyBoss()
@@ -31,8 +32,29 @@ void EnemyBoss::posChangeDown()
     if (y()>=100){
         disconnect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(posChangeDown()));
         bossHP = new BossHP(this);
+        connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(moveHorizontally()));
         connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(bossCollisions()));
         attack1();
+    }
+}
+
+void EnemyBoss::moveHorizontally()
+{
+    switch(d){
+    case Left:
+        setX(x()-1);
+        if (x()<=100){
+            d = Right;
+        }
+        break;
+    case Right:
+        setX(x()+1);
+        if (x()>=LENGTH-boundingRect().width()-100){
+            d = Left;
+        }
+        break;
+    default:
+        break;
     }
 }
 
@@ -60,13 +82,13 @@ void EnemyBoss::bossCollisions()
         }
     }
     bossHP->setHP(HP);
-    qDebug()<<HP;
+    qDebug()<<children().count();
 }
 
 void EnemyBoss::attack1()
 {
-    connect(Timer::getTimer10(), SIGNAL(timeout()), this, SLOT(attackWithBullet1()));
-    QTimer::singleShot(1000, this, SLOT(stopAttackWithBullet1()));
+    connect(Timer::getTimer5(), SIGNAL(timeout()), this, SLOT(attackWithBullet1()));
+//    QTimer::singleShot(1000, this, SLOT(stopAttackWithBullet1()));
 }
 
 void EnemyBoss::attackWithBullet1()

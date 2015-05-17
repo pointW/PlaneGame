@@ -14,13 +14,13 @@ public:
     BossHP(EnemyBoss *boss);
     ~BossHP();
 
-    void setHP(int a);
+    void setHP(double HP);
 
 private:
     QGraphicsPixmapItem *white;
     QGraphicsPixmapItem *red;
     QPixmap redPixmap;
-    int max;
+    double max;
 
 };
 
