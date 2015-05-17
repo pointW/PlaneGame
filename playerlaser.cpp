@@ -6,8 +6,10 @@ PlayerLaser::PlayerLaser(Plane *plane)
 {
     setZValue(1);
     setParent(plane);
+    setData(GD_Type, GO_PlayerLaser);
     laser = new LaserMain(plane);
     ball = new LaserBall(plane);
+    level = 1;
     addToGroup(laser);
     addToGroup(ball);
     connect(plane, &Plane::playerMoved, this, &PlayerLaser::refreshPos);
@@ -23,20 +25,16 @@ void PlayerLaser::refreshPos(Direction d)
 {
     switch(d){
     case Left:
-        laser->setX(laser->getX()-10);
-        ball->setX(ball->getX()-10);
+        setX(x()-10);
         break;
     case Right:
-        laser->setX(laser->getX()+10);
-        ball->setX(ball->getX()+10);
+        setX(x()+10);
         break;
     case Up:
-        laser->setY(laser->getY()-10);
-        ball->setY(ball->getY()-10);
+        setY(y()-10);
         break;
     case Down:
-        laser->setY(laser->getY()+10);
-        ball->setY(ball->getY()+10);
+        setY(y()+10);
         break;
     default:
         break;
@@ -48,6 +46,11 @@ void PlayerLaser::levelUp(int l)
     level = l;
 }
 
+int PlayerLaser::damage()
+{
+    return level;
+}
+
 //LaserMain
 
 LaserMain::LaserMain(Plane *plane)
@@ -56,7 +59,6 @@ LaserMain::LaserMain(Plane *plane)
     y = 0;
     setParent(plane);
     setZValue(1);
-    setData(GD_Type, GO_PlayerLaser);
     setPixmap(image->copy(0, y, 90, 800));
     setX(plane->getX()+(PLAYERWIDTH-LASERWIDTH)/2);
     setY(plane->getY()-800-LASERBALLWIDTH/2);
@@ -80,11 +82,14 @@ void LaserMain::levelUp(int l)
     case 1:
     case 2:
         image = new QPixmap(":/images/laser2");
+        break;
     case 3:
     case 4:
         image = new QPixmap(":/images/laser1");
+        break;
     case 5:
         image = new QPixmap(":/images/laser3");
+        break;
     }
 }
 
@@ -93,7 +98,6 @@ void LaserMain::levelUp(int l)
 LaserBall::LaserBall(Plane *plane)
 {
     setParent(plane);
-    setData(GD_Type, GO_PlayerLaser);
     setPixmap(QPixmap(":/images/laserBall2"));
     setZValue(2);
     setX(plane->getX()+(PLAYERWIDTH-LASERBALLWIDTH)/2);
@@ -118,10 +122,13 @@ void LaserBall::levelUp(int l)
     case 1:
     case 2:
         setPixmap(QPixmap(":/images/laserBall2"));
+        break;
     case 3:
     case 4:
         setPixmap(QPixmap(":/images/laserBall1"));
+        break;
     case 5:
         setPixmap(QPixmap(":/images/laserBall3"));
+        break;
     }
 }

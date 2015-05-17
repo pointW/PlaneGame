@@ -116,7 +116,7 @@ bool EnemyPlane::isHit(){
             return true;
         }
         else if (collidingItem->data(GD_Type) == GO_PlayerLaser){
-            HP-=1;
+            HP-=dynamic_cast<PlayerLaser *>(collidingItem)->damage();
             return true;
         }
         else if (collidingItem->data(GD_Type) == GO_PlayerMissile){

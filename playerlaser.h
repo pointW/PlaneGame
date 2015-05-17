@@ -38,6 +38,7 @@ class PlayerLaser : public QObject, public QGraphicsItemGroup
 public:
     PlayerLaser(Plane *plane);
     ~PlayerLaser();
+    int damage();
 
 public slots:
     void refreshPos(Direction d);
