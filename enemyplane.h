@@ -15,6 +15,7 @@ class EnemyPlane:public FlyItem
 {
     Q_OBJECT
 public:
+    EnemyPlane();
     EnemyPlane(int a, QString name, GameController *game);
     ~EnemyPlane();
     void move();
@@ -33,7 +34,7 @@ public slots:
 
 private:
     QList<QGraphicsItem*> collisions;
-    int HP;
+    double HP;
     int speed;
     Direction direction;
     Direction nextDirection;

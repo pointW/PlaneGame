@@ -26,6 +26,9 @@ public slots:
     void attack1();
     void attackWithBullet1();
     void stopAttackWithBullet1();
+    void attack2();
+    void attackWithBullet2();
+    void stopAttackWithBullet2();
 
 
 private:
@@ -33,6 +36,7 @@ private:
     BossHP *bossHP;
     QList<QGraphicsItem*> collisions;
     Direction d;
+    int safeZone;
 };
 
 #endif // ENEMYBOSS_H

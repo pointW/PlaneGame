@@ -97,8 +97,8 @@ GameController::~GameController()
 
 void GameController::resume()
 {
-    connect(Timer::getTimer1(), SIGNAL(timeout()), this, SLOT(createEnemyPlane()));
-//    scene->addItem(new EnemyBoss(1, "enemy0", this));
+//    connect(Timer::getTimer1(), SIGNAL(timeout()), this, SLOT(createEnemyPlane()));
+    scene->addItem(new EnemyBoss(1, "enemy0", this));
 }
 
 void GameController::addEnemy(int a)

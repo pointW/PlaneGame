@@ -1,17 +1,8 @@
 #include "playerbullet.h"
 
-PlayerBullet::PlayerBullet(int x, int y)
+PlayerBullet::PlayerBullet(int x, int y, Plane *plane, int direction)
 {
-    setData(GD_Type, GO_PlayerBullet);
-    setPixmap(QPixmap(":/images/redBullet"));
-    setX(x);
-    setY(y);
-    direction = 3;
-    connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(move()));
-}
-
-PlayerBullet::PlayerBullet(int x, int y, int direction)
-{
+    setParent(plane);
     setData(GD_Type, GO_PlayerBullet);
     setPixmap(QPixmap(":/images/redBullet"));
     setX(x);

@@ -2,6 +2,11 @@
 
 #include <QDebug>
 
+EnemyPlane::EnemyPlane()
+{
+
+}
+
 EnemyPlane::EnemyPlane(int a, QString name, GameController *game)
 {
     setParent(game);
@@ -120,9 +125,8 @@ bool EnemyPlane::isHit(){
             return true;
         }
         else if (collidingItem->data(GD_Type) == GO_PlayerMissile){
+            dynamic_cast<FlyItem *>(collidingItem)->deleteLater();
             HP-=20;
-            PlayerMissile *m = dynamic_cast<PlayerMissile *>(collidingItem);
-            m->deleteLater();
             return true;
         }
         else if (collidingItem->data(GD_Type) == GO_PlayerLightingBall){

@@ -8,7 +8,7 @@ class EnemyBullet:public FlyItem
 {
     Q_OBJECT
 public:
-    EnemyBullet(int x, int y, int angle, QObject *parent);
+    EnemyBullet(int x, int y, int angle, QObject *parent, int s = 5);
     ~EnemyBullet();
 
 public slots:
@@ -16,6 +16,7 @@ public slots:
 
 private:
     int angle;
+    int speed;
 };
 
 #endif // ENEMYBULLET_H

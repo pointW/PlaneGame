@@ -3,6 +3,9 @@
 
 #include "flyitem.h"
 #include "timer.h"
+#include "plane.h"
+
+class Plane;
 
 class PlayerBullet : public FlyItem
 {
@@ -11,8 +14,7 @@ class PlayerBullet : public FlyItem
 //    Q_PROPERTY(QPointF pos READ pos WRITE setPos)
 
 public:
-    PlayerBullet(int x, int y);
-    PlayerBullet(int x, int y, int direction);
+    PlayerBullet(int x, int y, Plane *plane, int direction = 3);
     ~PlayerBullet();
 
 public slots:

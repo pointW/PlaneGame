@@ -12,8 +12,8 @@ class PlayerMissile:public FlyItem
 {
     Q_OBJECT
 public:
-    PlayerMissile(int x, int y, QObject *parent);
-    PlayerMissile(int x, int y, int angle, QObject *parent);
+    PlayerMissile(int x, int y, Plane *plane);
+    PlayerMissile(int x, int y, int angle, Plane *plane);
     ~PlayerMissile();
 
     void aimTarget();

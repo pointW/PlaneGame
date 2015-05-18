@@ -58,6 +58,10 @@ void PlayerLightingBall::changePos()
     if (aimTimes>=3){
         setX(x()-speed*sin(angle*(3.14/180)));
         setY(y()-speed*cos(angle*(3.14/180)));
+        if (x()<0-boundingRect().width() || x()>LENGTH ||
+            y()<0-boundingRect().height() || y()>HEIGHT){
+            deleteLater();
+        }
         return;
     }
     else if (parent()->parent()->parent()->findChild<EnemyPlane *>("enemy"+QString::number(target, 10))==0)

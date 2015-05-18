@@ -5,9 +5,9 @@
 
 using namespace std;
 
-PlayerMissile::PlayerMissile(int x, int y, QObject *parent)
+PlayerMissile::PlayerMissile(int x, int y, Plane *plane)
 {
-    setParent(parent);
+    setParent(plane);
     setZValue(-1);
     setData(GD_Type, GO_PlayerMissile);
     setPixmap(QPixmap(":/images/playerMissile"));
@@ -21,9 +21,9 @@ PlayerMissile::PlayerMissile(int x, int y, QObject *parent)
             this, SLOT(changeAngleAndPos()));
 }
 
-PlayerMissile::PlayerMissile(int x, int y, int angle, QObject *parent)
+PlayerMissile::PlayerMissile(int x, int y, int angle, Plane *plane)
 {
-    setParent(parent);
+    setParent(plane);
     setZValue(-1);
     setData(GD_Type, GO_PlayerMissile);
     setPixmap(QPixmap(":/images/playerMissile"));
@@ -77,16 +77,16 @@ void PlayerMissile::changeAngleAndPos()
         }
     }
     changePos();
-    if (x()<0-boundingRect().width() || x()>LENGTH ||
-        y()<0-boundingRect().height() || y()>HEIGHT){
-        deleteLater();
-    }
 }
 
 void PlayerMissile::changePos()
 {
     setX(x()-10*sin(angle*(3.14/180)));
     setY(y()-10*cos(angle*(3.14/180)));
+    if (x()<0-boundingRect().width() || x()>LENGTH ||
+        y()<0-boundingRect().height() || y()>HEIGHT){
+        deleteLater();
+    }
 }
 
 void PlayerMissile::aimTarget()
@@ -104,8 +104,6 @@ void PlayerMissile::aimTarget()
         }
     }
 }
-
-
 
 
 
