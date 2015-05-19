@@ -21,6 +21,7 @@
 #include "background.h"
 #include "timer.h"
 #include "enemyboss.h"
+#include "lists.h"
 
 
 class Plane;

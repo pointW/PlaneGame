@@ -7,6 +7,20 @@ EnemyPlane::EnemyPlane()
 
 }
 
+EnemyPlane::EnemyPlane(int t)
+{
+    switch (t){
+    case 1:
+        setPixmap(QPixmap(":/images/enemyPlane1"));
+        HP = 20;
+        speed = 5;
+        score = 20;
+        direction = Down;
+        straightDown = true;
+        setData(GD_Type, GO_EnemyPlane);
+    }
+}
+
 EnemyPlane::EnemyPlane(int a, QString name, GameController *game)
 {
     setParent(game);
@@ -115,8 +129,7 @@ bool EnemyPlane::isHit(){
     collisions = collidingItems();
     foreach (QGraphicsItem *collidingItem, collisions) {
         if (collidingItem->data(GD_Type) == GO_PlayerBullet) {
-            PlayerBullet *b = dynamic_cast<PlayerBullet *>(collidingItem);
-            b->deleteLater();
+            dynamic_cast<PlayerBullet *>(collidingItem)->setRemoveFlag(true);
             HP-=10;
             return true;
         }
@@ -125,7 +138,7 @@ bool EnemyPlane::isHit(){
             return true;
         }
         else if (collidingItem->data(GD_Type) == GO_PlayerMissile){
-            dynamic_cast<FlyItem *>(collidingItem)->deleteLater();
+            dynamic_cast<FlyItem *>(collidingItem)->setRemoveFlag(true);
             HP-=20;
             return true;
         }

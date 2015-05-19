@@ -34,6 +34,7 @@ void EnemyBoss::posChangeDown()
         bossHP = new BossHP(this);
         connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(moveHorizontally()));
         connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(bossCollisions()));
+        connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(moveBullet()));
         attack1();
     }
 }
@@ -63,7 +64,7 @@ void EnemyBoss::bossCollisions()
     collisions = collidingItems();
     foreach (QGraphicsItem *collidingItem, collisions) {
         if (collidingItem->data(GD_Type) == GO_PlayerBullet) {
-            dynamic_cast<PlayerBullet *>(collidingItem)->deleteLater();
+            dynamic_cast<PlayerBullet *>(collidingItem)->setRemoveFlag(true);
             HP-=10;
         }
         else if (collidingItem->data(GD_Type) == GO_PlayerLaser){
@@ -71,7 +72,7 @@ void EnemyBoss::bossCollisions()
         }
         else if (collidingItem->data(GD_Type) == GO_PlayerMissile){
             HP-=20;
-            dynamic_cast<PlayerMissile *>(collidingItem)->deleteLater();
+            dynamic_cast<FlyItem *>(collidingItem)->setRemoveFlag(true);
         }
         else if (collidingItem->data(GD_Type) == GO_PlayerLightingBall){
             HP-=20;
@@ -82,16 +83,36 @@ void EnemyBoss::bossCollisions()
     qDebug()<<children().count();
 }
 
+void EnemyBoss::moveBullet()
+{
+    foreach (EnemyBullet *b, currentBossBullet){
+        b->move();
+        if (b->x()<0-b->boundingRect().width() || b->x()>LENGTH ||
+            b->y()<0-b->boundingRect().height() || b->y()>HEIGHT){
+            removeBullet(b);
+        }
+        else if (b->getRemoveFlag()){
+            removeBullet(b);
+        }
+    }
+}
+
 void EnemyBoss::attack1()
 {
     connect(Timer::getTimer5(), SIGNAL(timeout()), this, SLOT(attackWithBullet1()));
-    QTimer::singleShot(2000, this, SLOT(stopAttackWithBullet1()));
+//    QTimer::singleShot(2000, this, SLOT(stopAttackWithBullet1()));
 }
 
 void EnemyBoss::attackWithBullet1()
 {
-    for (int i = 0; i<=340; i+=20){
-        QGraphicsItem::scene()->addItem(new EnemyBullet(x()+boundingRect().width()/2, y()+boundingRect().height()/2, i, this));
+    for (int i = 0; i<=350; i+=10){
+        EnemyBullet *b = Lists::getEnemyBullet1();
+        b->setPos(x()+boundingRect().width()/2, y()+boundingRect().height()/2);
+        b->setAngle(i);
+        b->setSpeed(5);
+        b->setParent(this);
+        QGraphicsItem::scene()->addItem(b);
+        currentBossBullet.append(b);
     }
 }
 
@@ -125,5 +146,13 @@ void EnemyBoss::stopAttackWithBullet2()
     disconnect(Timer::getTimer5(), SIGNAL(timeout()), this, SLOT(attackWithBullet2()));
 }
 
-
+void EnemyBoss::removeBullet(EnemyBullet *b)
+{
+    currentBossBullet.removeOne(b);
+    switch (b->getType()){
+    case 1:
+        Lists::recoverEnemyBullet1(b);
+        break;
+    }
+}
 

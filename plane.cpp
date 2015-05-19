@@ -8,9 +8,14 @@ using namespace std;
 
 Plane::Plane(GameController *game)
 {
+    plane1 = QPixmap(":/images/player1");
+    plane2 = QPixmap(":/images/player2");
+    plane3 = QPixmap(":/images/player3");
+    plane4 = QPixmap(":/images/player4");
+    plane5 = QPixmap(":/images/player5");
     setData(GD_Type, GO_PlayerPlane);
     setObjectName("player");
-    setPixmap(QPixmap(":/images/player3"));
+    setPixmap(plane3);
     setParent(game);
     scene = game->getScene();
     scene->addItem(this);
@@ -45,6 +50,8 @@ Plane::Plane(GameController *game)
     connect(this, &Plane::playerDestroyed, game, &GameController::playerDestroyed);
     connect(Timer::getTimer5(), SIGNAL(timeout()), this, SLOT(playerUnbeatable()));
     connect(this, &Plane::getScore, game, &GameController::getScore);
+    connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(moveBullet()));
+    connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(moveMissile()));
     laser = new PlayerLaser(this);
 }
 
@@ -58,19 +65,19 @@ void Plane::handleSlop()
     if (!superFlag){
         switch (slopFlag){
         case -4:
-            setPixmap(QPixmap(":/images/player1"));
+            setPixmap(plane1);
             break;
         case -2:
-            setPixmap(QPixmap(":/images/player2"));
+            setPixmap(plane2);
             break;
         case 0:
-            setPixmap(QPixmap(":/images/player3"));
+            setPixmap(plane3);
             break;
         case 2:
-            setPixmap(QPixmap(":/images/player4"));
+            setPixmap(plane4);
             break;
         case 4:
-            setPixmap(QPixmap(":/images/player5"));
+            setPixmap(plane5);
             break;
         }
     }
@@ -150,29 +157,121 @@ void Plane::posChangeDown()
     }
 }
 
-void Plane::creatBullet()
+void Plane::addBullet(int x, int y, int d)
 {
-    switch(attackLevel){
-    case 1:
-        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), this));
-        break;
+    PlayerBullet *b = Lists::getPlayerBullet();
+    b->setPos(x, y);
+    b->setDirection(d);
+    b->setParent(this);
+    QGraphicsItem::scene()->addItem(b);
+    currentPlayerBulletList.append(b);
+}
 
+void Plane::addMissile(int x, int y, double a)
+{
+    PlayerMissile *m = Lists::getPlayerMissile();
+    m->setPos(x, y);
+    m->setAngle(a);
+    m->setParent(this);
+    QGraphicsItem::scene()->addItem(m);
+    currentPlayerMissileList.append(m);
+}
+
+void Plane::removeBullet(PlayerBullet *b)
+{
+    currentPlayerBulletList.removeOne(b);
+    Lists::recoverPlayerBullet(b);
+}
+
+void Plane::removeMissile(PlayerMissile *m)
+{
+    currentPlayerMissileList.removeOne(m);
+    Lists::recoverPlayerMissile(m);
+}
+
+void Plane::createBullet()
+{
+    switch (attackLevel){
+    case 1:
+        addBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), 3);
+        break;
     case 2:
-        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2-10, y(), this));
-        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2+10, y(), this));
+        addBullet(x()+(boundingRect().width()-BULLETWIDTH)/2-10, y(), 3);
+        addBullet(x()+(boundingRect().width()-BULLETWIDTH)/2+10, y(), 3);
         break;
     case 3:
-        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), this, 2));
-        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), this, 3));
-        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), this, 4));
+        addBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), 2);
+        addBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), 3);
+        addBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), 4);
         break;
     case 4:
-        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), this, 1));
-        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), this, 2));
-        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), this, 3));
-        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), this, 4));
-        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), this, 5));
+        addBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), 1);
+        addBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), 2);
+        addBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), 3);
+        addBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), 4);
+        addBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), 5);
+        break;
+    }
 
+//    switch(attackLevel){
+//    case 1:
+//        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), this));
+//        break;
+
+//    case 2:
+//        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2-10, y(), this));
+//        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2+10, y(), this));
+//        break;
+//    case 3:
+//        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), this, 2));
+//        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), this, 3));
+//        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), this, 4));
+//        break;
+//    case 4:
+//        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), this, 1));
+//        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), this, 2));
+//        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), this, 3));
+//        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), this, 4));
+//        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), this, 5));
+//        break;
+//    }
+}
+
+void Plane::createMissile()
+{
+    switch (missileLevel){
+    case 0:
+        break;
+    case 1:
+        addMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), 0);
+    }
+}
+
+void Plane::moveBullet()
+{
+    foreach (PlayerBullet *b, currentPlayerBulletList){
+        b->move();
+        if (b->x()<0-b->boundingRect().width() || b->x()>LENGTH ||
+            b->y()<0-b->boundingRect().height() || b->y()>HEIGHT){
+            removeBullet(b);
+        }
+        else if (b->getRemoveFlag()){
+            removeBullet(b);
+        }
+    }
+}
+
+void Plane::moveMissile()
+{
+    foreach (PlayerMissile *m, currentPlayerMissileList){
+        m->changeAngleAndPos();
+        if (m->x()<0-m->boundingRect().width() || m->x()>LENGTH ||
+            m->y()<0-m->boundingRect().height() || m->y()>HEIGHT){
+            removeMissile(m);
+        }
+        else if (m->getRemoveFlag()){
+            removeMissile(m);
+        }
     }
 }
 
@@ -193,7 +292,7 @@ void Plane::playerAttack()
 void Plane::attackWithBullet()
 {
     if (!bulletFlag){
-        connect(Timer::getTimer5(), SIGNAL(timeout()), this, SLOT(creatBullet()));
+        connect(Timer::getTimer5(), SIGNAL(timeout()), this, SLOT(createBullet()));
         bulletFlag = true;
     }
 }
@@ -210,7 +309,7 @@ void Plane::stopAttack()
 {
     attackFlag = false;
     if(bulletFlag){
-        disconnect(Timer::getTimer5(), SIGNAL(timeout()), this, SLOT(creatBullet()));
+        disconnect(Timer::getTimer5(), SIGNAL(timeout()), this, SLOT(createBullet()));
         bulletFlag = false;
     }
     if(laserFlag){
@@ -218,7 +317,7 @@ void Plane::stopAttack()
         laserFlag = false;
     }
     if (missileFlag){
-        disconnect(Timer::getTimer2(), SIGNAL(timeout()), this, SLOT(shootMissile()));
+        disconnect(Timer::getTimer2(), SIGNAL(timeout()), this, SLOT(createMissile()));
         missileFlag = false;
     }
 }
@@ -345,20 +444,10 @@ AttackType Plane::getAttackType()
     return attackType;
 }
 
-void Plane::shootMissile()
-{
-    switch (missileLevel){
-    case 0:
-        break;
-    case 1:
-        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), this));
-    }
-}
-
 void Plane::attackWithMissile()
 {
     if (!missileFlag){
-        connect(Timer::getTimer2(), SIGNAL(timeout()), this, SLOT(shootMissile()));
+        connect(Timer::getTimer2(), SIGNAL(timeout()), this, SLOT(createMissile()));
         missileFlag = true;
     }
 }
@@ -391,7 +480,7 @@ void Plane::handleKeyPressed(QKeyEvent *event)
         break;
 
     case Qt::Key_Q:
-        shootMissile();
+        createMissile();
         break;
 
     case Qt::Key_W:
@@ -547,24 +636,24 @@ void Plane::transformToNormal()
 
 void Plane::superState()
 {
-    if (superFlag){
-        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), 0, this));
-//        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), 15, this));
-//        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), -15, this));
-        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), 30, this));
-        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), -30, this));
-//        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), 45, this));
-//        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), -45, this));
-        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), 60, this));
-        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), -60, this));
-//        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), 75, this));
-//        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), -75, this));
-        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), 90, this));
-        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), -90, this));
-    }
-    else {
-        disconnect(Timer::getTimer2(), SIGNAL(timeout()), this, SLOT(superState()));
-    }
+//    if (superFlag){
+//        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), 0, this));
+////        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), 15, this));
+////        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), -15, this));
+//        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), 30, this));
+//        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), -30, this));
+////        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), 45, this));
+////        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), -45, this));
+//        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), 60, this));
+//        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), -60, this));
+////        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), 75, this));
+////        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), -75, this));
+//        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), 90, this));
+//        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), -90, this));
+//    }
+//    else {
+//        disconnect(Timer::getTimer2(), SIGNAL(timeout()), this, SLOT(superState()));
+//    }
 }
 
 //void Plane::moveWingmanFront()

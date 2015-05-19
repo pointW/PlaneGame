@@ -22,10 +22,14 @@ public:
     FlyItem();
     ~FlyItem();
 
+    void setRemoveFlag(bool f);
+    bool getRemoveFlag();
+
     int getRandomNumber(int max);
 
 protected:
     QGraphicsScene *scene;
+    bool removeFlag;
 };
 
 #endif // FLYITEM_H

@@ -1,14 +1,10 @@
 #include "playerbullet.h"
 
-PlayerBullet::PlayerBullet(int x, int y, Plane *plane, int direction)
+PlayerBullet::PlayerBullet()
 {
-    setParent(plane);
     setData(GD_Type, GO_PlayerBullet);
     setPixmap(QPixmap(":/images/redBullet"));
-    setX(x);
-    setY(y);
-    this->direction = direction;
-    connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(move()));
+    removeFlag = false;
 }
 
 PlayerBullet::~PlayerBullet()
@@ -20,26 +16,32 @@ void PlayerBullet::move()
 {
     switch(direction){
     case 1:
-        setX(x() - (20*0.38));
-        setY(y() - (20*0.92));
+        moveBy(-20*0.38, -20*0.92);
         break;
     case 5:
-        setX(x() + (20*0.38));
-        setY(y() - (20*0.92));
+        moveBy(20*0.38, -20*0.92);
         break;
     case 2:
-        setX(x() - (20*0.19));
-        setY(y() - (20*0.98));
+        moveBy(-20*0.19, -20*0.98);
         break;
     case 4:
-        setX(x() + (20*0.19));
-        setY(y() - (20*0.98));
+        moveBy(20*0.19, -20*0.98);
         break;
     case 3:
-        setY(y() - 20);
+        moveBy(0, -20);
+        break;
     }
-    if (x()<0-boundingRect().width() || x()>LENGTH ||
-        y()<0-boundingRect().height() || y()>HEIGHT){
-        deleteLater();
-    }
+}
+
+void PlayerBullet::setDirection(int d)
+{
+    direction = d;
+}
+
+void PlayerBullet::resetPlayerBullet()
+{
+    setParent(0);
+    removeFlag = false;
+    QGraphicsItem::scene()->removeItem(this);
+    direction = 0;
 }

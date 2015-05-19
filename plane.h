@@ -8,6 +8,9 @@
 #include "gamecontroller.h"
 #include "wingman.h"
 #include "timer.h"
+#include "lists.h"
+
+#include <QLinkedList>
 
 class PlayerBullet;
 class GameController;
@@ -42,16 +45,22 @@ public:
     void transformToSuper();
     void transformToNormal();
     void setTransformationImages();
+    void addBullet(int x, int y, int d);
+    void removeBullet(PlayerBullet *b);
+    void addMissile(int x, int y, double a);
+    void removeMissile(PlayerMissile *m);
 
 public slots:
     void posChangeLeft();
     void posChangeRight();
     void posChangeUp();
     void posChangeDown();
-    void creatBullet();
+    void createBullet();
+    void moveBullet();
+    void createMissile();
+    void moveMissile();
     void playerCollisions();
     AttackType getAttackType();
-    void shootMissile();
     void playerUnbeatable();
     void backToStraight();
     void changeImageToSuper();
@@ -97,6 +106,13 @@ private:
     int transformImagesFlag;
     bool wingmanFlag;
     int wingmanMoveFlag;
+    QLinkedList<PlayerBullet*> currentPlayerBulletList;
+    QLinkedList<PlayerMissile*> currentPlayerMissileList;
+    QPixmap plane1;
+    QPixmap plane2;
+    QPixmap plane3;
+    QPixmap plane4;
+    QPixmap plane5;
 };
 
 #endif // PLANE_H

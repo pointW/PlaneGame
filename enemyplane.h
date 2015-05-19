@@ -16,6 +16,7 @@ class EnemyPlane:public FlyItem
     Q_OBJECT
 public:
     EnemyPlane();
+    EnemyPlane(int t);
     EnemyPlane(int a, QString name, GameController *game);
     ~EnemyPlane();
     void move();
@@ -41,6 +42,7 @@ private:
     int downTimes;//记录向下移动次数
     bool straightDown;//记录敌机是否属于简单向下
     int score;
+    int type;
 };
 
 #endif // ENEMYPLANE_H

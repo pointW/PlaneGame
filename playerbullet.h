@@ -14,12 +14,12 @@ class PlayerBullet : public FlyItem
 //    Q_PROPERTY(QPointF pos READ pos WRITE setPos)
 
 public:
+    PlayerBullet();
     PlayerBullet(int x, int y, Plane *plane, int direction = 3);
     ~PlayerBullet();
-
-public slots:
+    void setDirection(int d);
     void move();
-
+    void resetPlayerBullet();
 
 protected:
     int direction;//1-5，子弹方向，1为左上45°，5为右上45°

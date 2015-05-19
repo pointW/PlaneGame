@@ -4,19 +4,25 @@
 #include "flyitem.h"
 #include "timer.h"
 
+class EnemyBoss;
+
 class EnemyBullet:public FlyItem
 {
     Q_OBJECT
 public:
-    EnemyBullet(int x, int y, int angle, QObject *parent, int s = 5);
+    EnemyBullet();
+    EnemyBullet(int t);
     ~EnemyBullet();
-
-public slots:
     void move();
+    void setAngle(int a);
+    void setSpeed(int s);
+    void resetEnemyBullet();
+    int getType();
 
 private:
     int angle;
     int speed;
+    int type;
 };
 
 #endif // ENEMYBULLET_H

@@ -12,14 +12,13 @@ class PlayerMissile:public FlyItem
 {
     Q_OBJECT
 public:
-    PlayerMissile(int x, int y, Plane *plane);
-    PlayerMissile(int x, int y, int angle, Plane *plane);
+    PlayerMissile();
     ~PlayerMissile();
 
     void aimTarget();
     void changePos();
-
-public slots:
+    void setAngle(double a);
+    void resetPlayerMissile();
     void changeAngleAndPos();
 
 private:

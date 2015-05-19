@@ -6,10 +6,13 @@
 #include "timer.h"
 #include "enemybullet.h"
 #include "bosshp.h"
+#include "lists.h"
 
 #include <QTimer>
+#include <QLinkedList>
 
 class BossHP;
+class EnemyBullet;
 
 class EnemyBoss:public FlyItem
 {
@@ -18,6 +21,7 @@ public:
     EnemyBoss(int a, QString name, GameController *game);
     ~EnemyBoss();
     double maxHP;
+    void removeBullet(EnemyBullet *b);
 
 public slots:
     void posChangeDown();
@@ -29,7 +33,7 @@ public slots:
     void attack2();
     void attackWithBullet2();
     void stopAttackWithBullet2();
-
+    void moveBullet();
 
 private:
     double HP;
@@ -37,6 +41,7 @@ private:
     QList<QGraphicsItem*> collisions;
     Direction d;
     int safeZone;
+    QLinkedList<EnemyBullet*> currentBossBullet;
 };
 
 #endif // ENEMYBOSS_H

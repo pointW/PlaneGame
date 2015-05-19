@@ -33,7 +33,8 @@ SOURCES += main.cpp\
     timer.cpp \
     enemyboss.cpp \
     enemybullet.cpp \
-    bosshp.cpp
+    bosshp.cpp \
+    lists.cpp
 
 HEADERS  += mainwindow.h \
     plane.h \
@@ -55,7 +56,8 @@ HEADERS  += mainwindow.h \
     timer.h \
     enemyboss.h \
     enemybullet.h \
-    bosshp.h
+    bosshp.h \
+    lists.h
 
 RESOURCES += \
     res.qrc

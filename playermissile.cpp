@@ -5,37 +5,13 @@
 
 using namespace std;
 
-PlayerMissile::PlayerMissile(int x, int y, Plane *plane)
+PlayerMissile::PlayerMissile()
 {
-    setParent(plane);
     setZValue(-1);
     setData(GD_Type, GO_PlayerMissile);
     setPixmap(QPixmap(":/images/playerMissile"));
-    angle = 0;
     aimTimes = 0;
-    setX(x);
-    setY(y);
-    aimTarget();
     setTransformOriginPoint(20, 30);
-    connect(Timer::getTimer(), SIGNAL(timeout()),
-            this, SLOT(changeAngleAndPos()));
-}
-
-PlayerMissile::PlayerMissile(int x, int y, int angle, Plane *plane)
-{
-    setParent(plane);
-    setZValue(-1);
-    setData(GD_Type, GO_PlayerMissile);
-    setPixmap(QPixmap(":/images/playerMissile"));
-    this->angle = angle;
-    setRotation(-angle);
-    aimTimes = 0;
-    setX(x);
-    setY(y);
-    aimTarget();
-    setTransformOriginPoint(20, 30);
-    connect(Timer::getTimer(), SIGNAL(timeout()),
-            this, SLOT(changeAngleAndPos()));
 }
 
 PlayerMissile::~PlayerMissile()
@@ -83,10 +59,6 @@ void PlayerMissile::changePos()
 {
     setX(x()-10*sin(angle*(3.14/180)));
     setY(y()-10*cos(angle*(3.14/180)));
-    if (x()<0-boundingRect().width() || x()>LENGTH ||
-        y()<0-boundingRect().height() || y()>HEIGHT){
-        deleteLater();
-    }
 }
 
 void PlayerMissile::aimTarget()
@@ -105,7 +77,20 @@ void PlayerMissile::aimTarget()
     }
 }
 
+void PlayerMissile::setAngle(double a)
+{
+    angle = a;
+}
 
-
+void PlayerMissile::resetPlayerMissile()
+{
+    angle = 0;
+    setRotation(angle);
+    target = -1;
+    aimTimes = 0;
+    setParent(0);
+    removeFlag = false;
+    QGraphicsItem::scene()->removeItem(this);
+}
 
 

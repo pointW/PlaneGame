@@ -11,6 +11,9 @@ GameController::GameController(QGraphicsScene *s, QObject *parent) :
     enemyPlaneGroupCount(0),
     enemyPlaneGroupCreating(false)
 {
+    Lists::createPlayerBulletList();
+    Lists::createPlayerMissileList();
+    Lists::createEnemyBullet1List();
     srand((unsigned int)time(NULL));
 
     difficulty = 1;
