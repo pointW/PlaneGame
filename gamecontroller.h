@@ -44,24 +44,20 @@ public:
     QGraphicsScene* getScene();
     void addEnemy(int a);
     void addEnemyGroup(int a);
+    void removeEnemy(EnemyPlane *e);
 
 public slots:
     void resume();
     void createEnemyPlane();
-    void createEnemyPlaneGroup1();
-    void enemyDestroyed(EnemyPlane *enemy);
+    void addEnemyPlaneGroup1();
+    void moveEnemy();
     void playerDestroyed(Plane *plane);
     void refreshPlayerHP(int a);
     void createNewPlane();
     void getScore(int a);
 
-protected:
-//    bool eventFilter(QObject *object, QEvent *event);
 
 private:
-//    void handleKeyPressed(QKeyEvent *event);
-//    void handleKeyRelease(QKeyEvent *event);
-
     QGraphicsScene *scene;
     Plane *plane;
     int enemyPlaneGroupCount;
@@ -71,7 +67,7 @@ private:
     PlayerLife *playerLife;
     Background *background;
     int difficulty;
-
+    QLinkedList<EnemyPlane*> currentEnemyPlaneList;
 
 };
 

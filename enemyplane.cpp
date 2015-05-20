@@ -9,59 +9,37 @@ EnemyPlane::EnemyPlane()
 
 EnemyPlane::EnemyPlane(int t)
 {
+    type = t;
     switch (t){
     case 1:
         setPixmap(QPixmap(":/images/enemyPlane1"));
         HP = 20;
+        maxHP = 20;
         speed = 5;
         score = 20;
         direction = Down;
         straightDown = true;
         setData(GD_Type, GO_EnemyPlane);
-    }
-}
-
-EnemyPlane::EnemyPlane(int a, QString name, GameController *game)
-{
-    setParent(game);
-    setObjectName(name);
-    setData(GD_Type, GO_EnemyPlane);
-    scene = game->getScene();
-    connect(this, &EnemyPlane::enemyDestroyed, game, &GameController::enemyDestroyed);
-    connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(enemyCollisions()));
-    switch (a){
-    case 1:
-        setPixmap(QPixmap(":/images/enemyPlane1"));
-        HP = 20;
-        speed = 5;
-        score = 20;
-        direction = Down;
-        straightDown = true;
-        setX(getRandomNumber(LENGTH-80));
-        setY(0);
-        move();
         break;
     case 2:
         setPixmap(QPixmap(":/images/enemyPlane2"));
         HP = 40;
+        maxHP = 40;
         speed = 2;
         score = 40;
         direction = Down;
         straightDown = true;
-        setX(getRandomNumber(LENGTH-120));
-        setY(0);
-        move();
+        setData(GD_Type, GO_EnemyPlane);
         break;
     case 3:
         setPixmap(QPixmap(":/images/enemyPlane3"));
         HP = 20;
+        maxHP = 20;
         speed = 7;
         score = 20;
         direction = Right;
         straightDown = false;
-        setX(0);
-        setY(0);
-        move();
+        setData(GD_Type, GO_EnemyPlane);
         break;
     }
 }
@@ -74,54 +52,36 @@ EnemyPlane::~EnemyPlane()
 void EnemyPlane::move()
 {
     if (straightDown){
-        connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(posChangeDown()));
+        setY(y()+speed);
     }
     else {
-        connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(posChange()));
-    }
-
-}
-
-void EnemyPlane::posChangeDown()
-{
-    setY(y()+speed);
-    if (y()>HEIGHT){
-        deleteLater();
-    }
-}
-
-void EnemyPlane::posChange()
-{
-    switch(direction){
-    case Down:
-        setY(y()+speed);
-        downTimes++;
-        if (downTimes == 20){
-            direction = nextDirection;
+        switch(direction){
+        case Down:
+            setY(y()+speed);
+            downTimes++;
+            if (downTimes == 20){
+                direction = nextDirection;
+            }
+            break;
+        case Left:
+            downTimes = 0;
+            setX(x()-speed);
+            if (x()<=0){
+                direction = Down;
+                nextDirection = Right;
+            }
+            break;
+        case Right:
+            downTimes = 0;
+            setX(x()+speed);
+            if (x()>=LENGTH-80){
+                direction = Down;
+                nextDirection = Left;
+            }
+            break;
+        default:
+            break;
         }
-        break;
-    case Left:
-        downTimes = 0;
-        setX(x()-speed);
-        if (x()<=0){
-            direction = Down;
-            nextDirection = Right;
-        }
-        break;
-    case Right:
-        downTimes = 0;
-        setX(x()+speed);
-        if (x()>=LENGTH-80){
-            direction = Down;
-            nextDirection = Left;
-        }
-        break;
-    default:
-        break;
-    }
-    if (x()<0-boundingRect().width() || x()>LENGTH ||
-        y()<0-boundingRect().height() || y()>HEIGHT){
-        deleteLater();
     }
 }
 
@@ -157,20 +117,32 @@ int EnemyPlane::getHP()
     return HP;
 }
 
-void EnemyPlane::destroy()
-{
-    emit enemyDestroyed(this);
-    deleteLater();
-}
-
 void EnemyPlane::enemyCollisions()
 {
     if (isHit() && HP<=0){
-        destroy();
+        removeFlag = true;
     }
 }
 
 int EnemyPlane::getScore()
 {
     return score;
+}
+
+int EnemyPlane::getType()
+{
+    return type;
+}
+
+void EnemyPlane::resetEnemyPlane()
+{
+    setParent(0);
+    removeFlag = false;
+    QGraphicsItem::scene()->removeItem(this);
+    HP = maxHP;
+    switch (type){
+    case 3:
+        direction = Right;
+        break;
+    }
 }

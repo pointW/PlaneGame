@@ -66,20 +66,45 @@ void Lists::recoverEnemyBullet1(EnemyBullet *b)
     enemyBullet1List.append(b);
 }
 
-void Lists::createEnemyPlane1List()
+void Lists::createEnemyPlaneList()
 {
     for (int i = 0; i<=20; i++){
         enemyPlane1List.append(new EnemyPlane(1));
     }
+    for (int i = 0; i<=20; i++){
+        enemyPlane2List.append(new EnemyPlane(2));
+    }
+    for (int i = 0; i<=50; i++){
+        enemyPlane3List.append(new EnemyPlane(3));
+    }
 }
 
-EnemyPlane* Lists::getEnemyPlane1()
+EnemyPlane* Lists::getEnemyPlane(int t)
 {
-    return enemyPlane1List.takeLast();
+    switch (t){
+    case 1:
+        return enemyPlane1List.takeLast();
+    case 2:
+        return enemyPlane2List.takeLast();
+    case 3:
+        return enemyPlane3List.takeLast();
+    }
 }
 
-void Lists::recoverEnemyPlane1(EnemyPlane *p)
+void Lists::recoverEnemyPlane(EnemyPlane *e)
 {
-    p->resetEnemyPlane();
-    enemyPlane1List.append(p);
+    e->resetEnemyPlane();
+    switch (e->getType()){
+    case 1:
+        enemyPlane1List.append(e);
+        return;
+    case 2:
+        enemyPlane2List.append(e);
+        return;
+    case 3:
+        enemyPlane3List.append(e);
+        return;
+    }
+    return;
 }
+

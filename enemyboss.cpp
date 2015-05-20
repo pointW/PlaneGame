@@ -130,15 +130,15 @@ void EnemyBoss::attack2()
 
 void EnemyBoss::attackWithBullet2()
 {
-    for (int i = 0; i<=355; i+=10){
-        if (i>safeZone+30 || i<safeZone-30){
-            QGraphicsItem::scene()->addItem(new EnemyBullet(x()+boundingRect().width()/2, y()+boundingRect().height()/2, i, this, 3));
-        }
-    }
-    safeZone+=10;
-    if (safeZone>=170){
-        stopAttackWithBullet2();
-    }
+//    for (int i = 0; i<=355; i+=10){
+//        if (i>safeZone+30 || i<safeZone-30){
+//            QGraphicsItem::scene()->addItem(new EnemyBullet(x()+boundingRect().width()/2, y()+boundingRect().height()/2, i, this, 3));
+//        }
+//    }
+//    safeZone+=10;
+//    if (safeZone>=170){
+//        stopAttackWithBullet2();
+//    }
 }
 
 void EnemyBoss::stopAttackWithBullet2()

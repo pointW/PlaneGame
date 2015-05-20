@@ -22,20 +22,15 @@ public:
     void move();
     bool isHit();
     int getHP();
-    void destroy();
     int getScore();
-
-signals:
-    void enemyDestroyed(EnemyPlane *enemy);
-
-public slots:
-    void posChange();
-    void posChangeDown();
+    int getType();
+    void resetEnemyPlane();
     void enemyCollisions();
 
 private:
     QList<QGraphicsItem*> collisions;
     double HP;
+    double maxHP;
     int speed;
     Direction direction;
     Direction nextDirection;

@@ -212,29 +212,6 @@ void Plane::createBullet()
         addBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), 5);
         break;
     }
-
-//    switch(attackLevel){
-//    case 1:
-//        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), this));
-//        break;
-
-//    case 2:
-//        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2-10, y(), this));
-//        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2+10, y(), this));
-//        break;
-//    case 3:
-//        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), this, 2));
-//        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), this, 3));
-//        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), this, 4));
-//        break;
-//    case 4:
-//        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), this, 1));
-//        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), this, 2));
-//        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), this, 3));
-//        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), this, 4));
-//        scene->addItem(new PlayerBullet(x()+(boundingRect().width()-BULLETWIDTH)/2, y(), this, 5));
-//        break;
-//    }
 }
 
 void Plane::createMissile()
@@ -426,7 +403,7 @@ void Plane::playerCollisions()
         }
         else if (collidingItem->data(GD_Type) == GO_EnemyPlane){
             EnemyPlane *enemy = dynamic_cast<EnemyPlane *>(collidingItem);
-            enemy->destroy();
+            enemy->setRemoveFlag(true);
             if (beatable && !superFlag){
                 HP-=10;
                 emit refreshHP(HP);

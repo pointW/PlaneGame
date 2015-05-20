@@ -9,6 +9,7 @@
 class PlayerBullet;
 class PlayerMissile;
 class EnemyBullet;
+class EnemyPlane;
 
 class Lists
 {
@@ -33,17 +34,9 @@ public:
     static EnemyBullet* getEnemyBullet1();
     static void recoverEnemyBullet1(EnemyBullet *b);
 
-    static void createEnemyPlane1List();
-    static EnemyPlane* getEnemyPlane1();
-    static void recoverEnemyPlane1(EnemyPlane *p);
-
-    static void createEnemyPlane2List();
-    static EnemyPlane* getEnemyPlane2();
-    static void recoverEnemyPlane2(EnemyPlane *p);
-
-    static void createEnemyPlane3List();
-    static EnemyPlane* getEnemyPlane3();
-    static void recoverEnemyPlane3(EnemyPlane *p);
+    static void createEnemyPlaneList();
+    static EnemyPlane* getEnemyPlane(int t);
+    static void recoverEnemyPlane(EnemyPlane *e);
 };
 
 #endif // LISTS_H
