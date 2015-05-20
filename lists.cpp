@@ -6,7 +6,7 @@ QLinkedList<EnemyBullet*> Lists::enemyBullet1List = QLinkedList<EnemyBullet*>();
 QLinkedList<EnemyPlane*> Lists::enemyPlane1List = QLinkedList<EnemyPlane*>();
 QLinkedList<EnemyPlane*> Lists::enemyPlane2List = QLinkedList<EnemyPlane*>();
 QLinkedList<EnemyPlane*> Lists::enemyPlane3List = QLinkedList<EnemyPlane*>();
-
+QLinkedList<BuffItem*> Lists::buffList = QLinkedList<BuffItem*>();
 Lists::Lists()
 {
 
@@ -89,6 +89,7 @@ EnemyPlane* Lists::getEnemyPlane(int t)
     case 3:
         return enemyPlane3List.takeLast();
     }
+    return NULL;
 }
 
 void Lists::recoverEnemyPlane(EnemyPlane *e)
@@ -106,5 +107,42 @@ void Lists::recoverEnemyPlane(EnemyPlane *e)
         return;
     }
     return;
+}
+
+void Lists::createBuffList()
+{
+    for (int i = 0; i<20; i++){
+        buffList.append(new BuffItem(TurnToBullet));
+    }
+    for (int i = 0; i<20; i++){
+        buffList.append(new BuffItem(TurnToLaser));
+    }
+    for (int i = 0; i<20; i++){
+        buffList.append(new BuffItem(LevelUp));
+    }
+    for (int i = 0; i<20; i++){
+        buffList.append(new BuffItem(AddMissile));
+    }
+    for (int i = 0; i<100; i++){
+        buffList.append(new BuffItem(Diamond));
+    }
+}
+
+BuffItem* Lists::getBuff(BuffType t)
+{
+    foreach (BuffItem* buff, buffList){
+        if (buff->getBuffType() == t){
+            buffList.removeOne(buff);
+            buff->setDirectionAndSpeed();
+            return buff;
+        }
+    }
+    return NULL;
+}
+
+void Lists::recoverBuff(BuffItem *b)
+{
+    b->resetBuff();
+    buffList.append(b);
 }
 

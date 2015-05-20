@@ -16,26 +16,22 @@ class BuffItem : public FlyItem
     Q_OBJECT
 public:
     BuffItem();
-    BuffItem(BuffType BT, int x, int y, GameController *game);
+    BuffItem(BuffType t);
     ~BuffItem();
 
     void changeDirection();
     void move();
     BuffType getBuffType();
-//    int distenceToPlayer();
-//    void flyToPlayer();
-
-public slots:
-    void changeBuffPos();
+    void setDirectionAndSpeed();
+    void resetBuff();
 
 private:
     BuffType buffType;
     Direction direction;
     int directionChange;//方向改变次数
     QTimer *deletetimer;
-    bool aimedPlayer;
-    double angle;
     int speed;
+    int existCount;
 };
 
 #endif // BUFFITEM_H

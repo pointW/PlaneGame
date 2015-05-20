@@ -15,6 +15,7 @@ GameController::GameController(QGraphicsScene *s, QObject *parent) :
     Lists::createPlayerMissileList();
     Lists::createEnemyBullet1List();
     Lists::createEnemyPlaneList();
+    Lists::createBuffList();
     srand((unsigned int)time(NULL));
 
     difficulty = 1;
@@ -36,6 +37,7 @@ void GameController::resume()
 {
     connect(Timer::getTimer1(), SIGNAL(timeout()), this, SLOT(createEnemyPlane()));
     connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(moveEnemy()));
+    connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(moveBuff()));
 //    scene->addItem(new EnemyBoss(1, "enemy0", this));
 }
 
@@ -117,25 +119,61 @@ void GameController::moveEnemy()
             switch(getRandomNumber(30)){
             case 0:
                 if (plane->getAttackType()!=Laser){
-                    scene->addItem(new BuffItem(TurnToLaser, e->x(), e->y(), this));
+                    BuffItem *buff = Lists::getBuff(TurnToLaser);
+                    buff->setParent(this);
+                    buff->setPos(e->x(), e->y());
+                    scene->addItem(buff);
+                    currentBuffList.append(buff);
                 }
                 break;
             case 1:
                 if (plane->getAttackType()!=Bullet){
-                    scene->addItem(new BuffItem(TurnToBullet, e->x(), e->y(), this));
+                    BuffItem *buff = Lists::getBuff(TurnToBullet);
+                    buff->setParent(this);
+                    buff->setPos(e->x(), e->y());
+                    scene->addItem(buff);
+                    currentBuffList.append(buff);
                 }
                 break;
             case 3:
-                scene->addItem(new BuffItem(LevelUp, e->x(), e->y(), this));
-                break;
-            case 4:
-                scene->addItem(new BuffItem(AddMissile, e->x(), e->y(), this));
-                break;
-            case 5:case 6:case 7:case 8:case 9:case 10:case 11:
-                scene->addItem(new BuffItem(Diamond, e->x(), e->y(), this));
+            {
+                BuffItem *buff = Lists::getBuff(LevelUp);
+                buff->setParent(this);
+                buff->setPos(e->x(), e->y());
+                scene->addItem(buff);
+                currentBuffList.append(buff);
                 break;
             }
+            case 4:
+            {
+                BuffItem *buff = Lists::getBuff(AddMissile);
+                buff->setParent(this);
+                buff->setPos(e->x(), e->y());
+                scene->addItem(buff);
+                currentBuffList.append(buff);
+                break;
+            }
+            case 5:case 6:case 7:case 8:case 9:case 10:case 11:
+            {
+                BuffItem *buff = Lists::getBuff(Diamond);
+                buff->setParent(this);
+                buff->setPos(e->x(), e->y());
+                scene->addItem(buff);
+                currentBuffList.append(buff);
+                break;
+            }
+            }
             removeEnemy(e);
+        }
+    }
+}
+
+void GameController::moveBuff()
+{
+    foreach (BuffItem *b, currentBuffList){
+        b->move();
+        if (b->getRemoveFlag()){
+            removeBuff(b);
         }
     }
 }
@@ -144,6 +182,12 @@ void GameController::removeEnemy(EnemyPlane *e)
 {
     currentEnemyPlaneList.removeOne(e);
     Lists::recoverEnemyPlane(e);
+}
+
+void GameController::removeBuff(BuffItem *b)
+{
+    currentBuffList.removeOne(b);
+    Lists::recoverBuff(b);
 }
 
 int GameController::getRandomNumber(int max)

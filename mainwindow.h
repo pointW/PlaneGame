@@ -9,6 +9,7 @@
 #include <QGraphicsView>
 #include <QMainWindow>
 #include <QGraphicsPixmapItem>
+#include <QLabel>
 
 class GameController;
 

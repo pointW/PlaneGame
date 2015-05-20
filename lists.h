@@ -10,6 +10,7 @@ class PlayerBullet;
 class PlayerMissile;
 class EnemyBullet;
 class EnemyPlane;
+class BuffItem;
 
 class Lists
 {
@@ -21,6 +22,7 @@ private:
     static QLinkedList<EnemyPlane*> enemyPlane1List;
     static QLinkedList<EnemyPlane*> enemyPlane2List;
     static QLinkedList<EnemyPlane*> enemyPlane3List;
+    static QLinkedList<BuffItem*> buffList;
 public:
     static void createPlayerBulletList();
     static PlayerBullet* getPlayerBullet();
@@ -37,6 +39,10 @@ public:
     static void createEnemyPlaneList();
     static EnemyPlane* getEnemyPlane(int t);
     static void recoverEnemyPlane(EnemyPlane *e);
+
+    static void createBuffList();
+    static BuffItem* getBuff(BuffType t);
+    static void recoverBuff(BuffItem *b);
 };
 
 #endif // LISTS_H

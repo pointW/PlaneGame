@@ -45,12 +45,14 @@ public:
     void addEnemy(int a);
     void addEnemyGroup(int a);
     void removeEnemy(EnemyPlane *e);
+    void removeBuff(BuffItem *b);
 
 public slots:
     void resume();
     void createEnemyPlane();
     void addEnemyPlaneGroup1();
     void moveEnemy();
+    void moveBuff();
     void playerDestroyed(Plane *plane);
     void refreshPlayerHP(int a);
     void createNewPlane();
@@ -68,7 +70,7 @@ private:
     Background *background;
     int difficulty;
     QLinkedList<EnemyPlane*> currentEnemyPlaneList;
-
+    QLinkedList<BuffItem*> currentBuffList;
 };
 
 #endif // GAMECONTROLLER_H

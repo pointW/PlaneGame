@@ -51,5 +51,6 @@
         <file alias="enemyBullet1">images/132.png</file>
         <file alias="bossHP1">images/bossHP1.png</file>
         <file alias="bossHP2">images/bossHP2.png</file>
+        <file alias="loading">images/loading.gif</file>
     </qresource>
 </RCC>

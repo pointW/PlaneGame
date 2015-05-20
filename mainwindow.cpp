@@ -5,11 +5,12 @@
 #endif
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent),
-      scene(new QGraphicsScene(this)),
-      view(new QGraphicsView(scene, this)),
-      game(new GameController(scene, this))
+    : QMainWindow(parent)
 {
+    scene = new QGraphicsScene(this);
+    view = new QGraphicsView(scene, this);
+    game = new GameController(scene, this);
+
     resize(LENGTH, HEIGHT);
 
     scene->setSceneRect(0, 0, LENGTH, HEIGHT);

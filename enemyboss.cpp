@@ -35,7 +35,7 @@ void EnemyBoss::posChangeDown()
         connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(moveHorizontally()));
         connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(bossCollisions()));
         connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(moveBullet()));
-        attack1();
+        attack2();
     }
 }
 
@@ -100,7 +100,7 @@ void EnemyBoss::moveBullet()
 void EnemyBoss::attack1()
 {
     connect(Timer::getTimer5(), SIGNAL(timeout()), this, SLOT(attackWithBullet1()));
-//    QTimer::singleShot(2000, this, SLOT(stopAttackWithBullet1()));
+    QTimer::singleShot(2000, this, SLOT(stopAttackWithBullet1()));
 }
 
 void EnemyBoss::attackWithBullet1()
@@ -130,15 +130,21 @@ void EnemyBoss::attack2()
 
 void EnemyBoss::attackWithBullet2()
 {
-//    for (int i = 0; i<=355; i+=10){
-//        if (i>safeZone+30 || i<safeZone-30){
-//            QGraphicsItem::scene()->addItem(new EnemyBullet(x()+boundingRect().width()/2, y()+boundingRect().height()/2, i, this, 3));
-//        }
-//    }
-//    safeZone+=10;
-//    if (safeZone>=170){
-//        stopAttackWithBullet2();
-//    }
+    for (int i = 0; i<=350; i+=10){
+        if (i>safeZone+30 || i<safeZone-30){
+            EnemyBullet *b = Lists::getEnemyBullet1();
+            b->setPos(x()+boundingRect().width()/2, y()+boundingRect().height()/2);
+            b->setAngle(i);
+            b->setSpeed(3);
+            b->setParent(this);
+            QGraphicsItem::scene()->addItem(b);
+            currentBossBullet.append(b);
+        }
+    }
+    safeZone+=10;
+    if (safeZone>=170){
+        stopAttackWithBullet2();
+    }
 }
 
 void EnemyBoss::stopAttackWithBullet2()

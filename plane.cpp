@@ -399,7 +399,7 @@ void Plane::playerCollisions()
                 emit getScore(50);
                 break;
             }
-            bf->deleteLater();
+            bf->setRemoveFlag(true);
         }
         else if (collidingItem->data(GD_Type) == GO_EnemyPlane){
             EnemyPlane *enemy = dynamic_cast<EnemyPlane *>(collidingItem);
