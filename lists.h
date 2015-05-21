@@ -11,6 +11,7 @@ class PlayerMissile;
 class EnemyBullet;
 class EnemyPlane;
 class BuffItem;
+class Explosion;
 
 class Lists
 {
@@ -23,6 +24,7 @@ private:
     static QLinkedList<EnemyPlane*> enemyPlane2List;
     static QLinkedList<EnemyPlane*> enemyPlane3List;
     static QLinkedList<BuffItem*> buffList;
+    static QLinkedList<Explosion*> explosionList;
 public:
     static void createPlayerBulletList();
     static PlayerBullet* getPlayerBullet();
@@ -43,6 +45,10 @@ public:
     static void createBuffList();
     static BuffItem* getBuff(BuffType t);
     static void recoverBuff(BuffItem *b);
+
+    static void createExplosionList();
+    static Explosion* getExplosion();
+    static void recoverExplosion(Explosion *e);
 };
 
 #endif // LISTS_H

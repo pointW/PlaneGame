@@ -1,21 +1,30 @@
 #include "explosion.h"
 
-Explosion::Explosion(int x, int y, GameController *game)
+Explosion::Explosion(int t)
 {
-    setParent(game);
-    explosion1 = new QPixmap(":/images/explosion1");
+    switch (t){
+    case 1:
+        type = 1;
+        explosion1 = new QPixmap(":/images/explosion1");
+        break;
+    }
     xCount = 0;
     yCount = 0;
-    setPos(x, y);
-    connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(showExplosion()));
 }
-
 
 Explosion::~Explosion()
 {
     delete explosion1;
 }
 
+void Explosion::resetExplosion()
+{
+    setParent(0);
+    removeFlag = false;
+    QGraphicsItem::scene()->removeItem(this);
+    xCount = 0;
+    yCount = 0;
+}
 
 void Explosion::showExplosion()
 {
@@ -26,8 +35,7 @@ void Explosion::showExplosion()
         yCount = 1;
     }
     if (xCount == 10 && yCount == 1){
-        setVisible(false);
-        deleteLater();
+        removeFlag = true;
     }
 }
 

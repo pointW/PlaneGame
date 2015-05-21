@@ -7,6 +7,8 @@ QLinkedList<EnemyPlane*> Lists::enemyPlane1List = QLinkedList<EnemyPlane*>();
 QLinkedList<EnemyPlane*> Lists::enemyPlane2List = QLinkedList<EnemyPlane*>();
 QLinkedList<EnemyPlane*> Lists::enemyPlane3List = QLinkedList<EnemyPlane*>();
 QLinkedList<BuffItem*> Lists::buffList = QLinkedList<BuffItem*>();
+QLinkedList<Explosion*> Lists::explosionList = QLinkedList<Explosion*>();
+
 Lists::Lists()
 {
 
@@ -145,4 +147,23 @@ void Lists::recoverBuff(BuffItem *b)
     b->resetBuff();
     buffList.append(b);
 }
+
+void Lists::createExplosionList()
+{
+    for (int i = 0; i<=50; i++){
+        explosionList.append(new Explosion(1));
+    }
+}
+
+Explosion* Lists::getExplosion()
+{
+    return explosionList.takeFirst();
+}
+
+void Lists::recoverExplosion(Explosion *e)
+{
+    e->resetExplosion();
+    explosionList.append(e);
+}
+
 

@@ -16,6 +16,7 @@ GameController::GameController(QGraphicsScene *s, QObject *parent) :
     Lists::createEnemyBullet1List();
     Lists::createEnemyPlaneList();
     Lists::createBuffList();
+    Lists::createExplosionList();
     srand((unsigned int)time(NULL));
 
     difficulty = 1;
@@ -38,6 +39,7 @@ void GameController::resume()
     connect(Timer::getTimer1(), SIGNAL(timeout()), this, SLOT(createEnemyPlane()));
     connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(moveEnemy()));
     connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(moveBuff()));
+    connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(showExplosion()));
 //    scene->addItem(new EnemyBoss(1, "enemy0", this));
 }
 
@@ -115,7 +117,11 @@ void GameController::moveEnemy()
         }
         else if (e->getRemoveFlag()){
             score->addScore(e->getScore());
-            scene->addItem(new Explosion(e->x()-10, e->y()-10, this));
+            Explosion *explosion = Lists::getExplosion();
+            explosion->setParent(this);
+            explosion->setPos(e->x()-10, e->y()-10);
+            currentExplosionList.append(explosion);
+            scene->addItem(explosion);
             switch(getRandomNumber(30)){
             case 0:
                 if (plane->getAttackType()!=Laser){
@@ -178,6 +184,16 @@ void GameController::moveBuff()
     }
 }
 
+void GameController::showExplosion()
+{
+    foreach (Explosion *e, currentExplosionList) {
+        e->showExplosion();
+        if (e->getRemoveFlag()){
+            removeExplosion(e);
+        }
+    }
+}
+
 void GameController::removeEnemy(EnemyPlane *e)
 {
     currentEnemyPlaneList.removeOne(e);
@@ -188,6 +204,12 @@ void GameController::removeBuff(BuffItem *b)
 {
     currentBuffList.removeOne(b);
     Lists::recoverBuff(b);
+}
+
+void GameController::removeExplosion(Explosion *explosion)
+{
+    currentExplosionList.removeOne(explosion);
+    Lists::recoverExplosion(explosion);
 }
 
 int GameController::getRandomNumber(int max)
@@ -228,7 +250,11 @@ void GameController::refreshPlayerHP(int a)
 
 void GameController::playerDestroyed(Plane *plane)
 {
-    scene->addItem(new Explosion(plane->x()-10, plane->y()-10, this));
+    Explosion *explosion = Lists::getExplosion();
+    explosion->setParent(this);
+    explosion->setPos(plane->x()-10, plane->y()-10);
+    currentExplosionList.append(explosion);
+    scene->addItem(explosion);
     playerLife->decreaseLife();
     if (playerLife->getLife()>0){
         connect(Timer::getTimer1(), SIGNAL(timeout()), this, SLOT(createNewPlane()));

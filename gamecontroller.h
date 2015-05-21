@@ -46,6 +46,7 @@ public:
     void addEnemyGroup(int a);
     void removeEnemy(EnemyPlane *e);
     void removeBuff(BuffItem *b);
+    void removeExplosion(Explosion *explosion);
 
 public slots:
     void resume();
@@ -53,6 +54,7 @@ public slots:
     void addEnemyPlaneGroup1();
     void moveEnemy();
     void moveBuff();
+    void showExplosion();
     void playerDestroyed(Plane *plane);
     void refreshPlayerHP(int a);
     void createNewPlane();
@@ -71,6 +73,7 @@ private:
     int difficulty;
     QLinkedList<EnemyPlane*> currentEnemyPlaneList;
     QLinkedList<BuffItem*> currentBuffList;
+    QLinkedList<Explosion*> currentExplosionList;
 };
 
 #endif // GAMECONTROLLER_H

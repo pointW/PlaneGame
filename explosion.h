@@ -14,21 +14,16 @@ class Explosion : public FlyItem
 {
     Q_OBJECT
 public:
-    Explosion(int x, int y, GameController *game);
+    Explosion(int t);
     ~Explosion();
-
-public slots:
+    void resetExplosion();
     void showExplosion();
-
-signals:
-    void explosionEnd();
 
 private:
     QPixmap *explosion1;
-
     int xCount;
     int yCount;
-
+    int type;
     bool isDone;
 };
 
