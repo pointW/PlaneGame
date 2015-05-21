@@ -20,9 +20,7 @@ private:
     static QLinkedList<PlayerBullet*> playerBulletList;
     static QLinkedList<PlayerMissile*> playerMissileList;
     static QLinkedList<EnemyBullet*> enemyBullet1List;
-    static QLinkedList<EnemyPlane*> enemyPlane1List;
-    static QLinkedList<EnemyPlane*> enemyPlane2List;
-    static QLinkedList<EnemyPlane*> enemyPlane3List;
+    static QLinkedList<EnemyPlane*> enemyPlaneList;
     static QLinkedList<BuffItem*> buffList;
     static QLinkedList<Explosion*> explosionList;
 public:
