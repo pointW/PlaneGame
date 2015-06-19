@@ -2,7 +2,7 @@
 #define CONSTANTS
 
 #define LENGTH 600
-#define HEIGHT 800
+#define HEIGHT 700
 
 #define BULLETWIDTH 13
 #define MISSILEWIDTH 40

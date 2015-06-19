@@ -18,30 +18,35 @@ class EnemyBoss:public FlyItem
 {
     Q_OBJECT
 public:
+    EnemyBoss(int a);
     EnemyBoss(int a, QString name, GameController *game);
     ~EnemyBoss();
-    double maxHP;
     void removeBullet(EnemyBullet *b);
+    int getType();
+    void resetBoss();
+    void start();
 
 public slots:
     void posChangeDown();
     void moveHorizontally();
     void bossCollisions();
     void attack1();
+    void attack2();
     void attackWithBullet1();
     void stopAttackWithBullet1();
-    void attack2();
     void attackWithBullet2();
     void stopAttackWithBullet2();
     void moveBullet();
 
 private:
     double HP;
+    double maxHP;
     BossHP *bossHP;
     QList<QGraphicsItem*> collisions;
     Direction d;
     int safeZone;
     QLinkedList<EnemyBullet*> currentBossBullet;
+    int type;
 };
 
 #endif // ENEMYBOSS_H

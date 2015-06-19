@@ -53,42 +53,31 @@ int PlayerLaser::damage()
 
 //LaserMain
 
-LaserMain::LaserMain(Plane *plane)
+LaserMain::LaserMain(Plane *plane):
+    Laser(QPixmap(":/images/laser2"), 90, 150)
 {
-    image = new QPixmap(":/images/laser2");
     y = 0;
     setParent(plane);
     setZValue(1);
-    setPixmap(image->copy(0, y, 90, 800));
+    setPixmap(image.copy(0, y, width, HEIGHT));
     setX(plane->x()+(PLAYERWIDTH-LASERWIDTH)/2);
-    setY(plane->y()-800-LASERBALLWIDTH/2);
+    setY(plane->y()-HEIGHT-LASERBALLWIDTH/2);
     connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(moveLaser()));
     connect(plane, &Plane::levelUp, this, &LaserMain::levelUp);
 }
 
-void LaserMain::moveLaser()
-{
-    y+=15;
-    if (y >= 150){
-        y = 0;
-    }
-    setPixmap(image->copy(0, y, 90, 800));
-}
-
 void LaserMain::levelUp(int l)
 {
-    delete image;
     switch (l){
     case 1:
     case 2:
-        image = new QPixmap(":/images/laser2");
+        image = QPixmap(":/images/laser2");
         break;
     case 3:
-    case 4:
-        image = new QPixmap(":/images/laser1");
+        image = QPixmap(":/images/laser1");
         break;
-    case 5:
-        image = new QPixmap(":/images/laser3");
+    case 4:
+        image = QPixmap(":/images/laser3");
         break;
     }
 }
@@ -124,10 +113,9 @@ void LaserBall::levelUp(int l)
         setPixmap(QPixmap(":/images/laserBall2"));
         break;
     case 3:
-    case 4:
         setPixmap(QPixmap(":/images/laserBall1"));
         break;
-    case 5:
+    case 4:
         setPixmap(QPixmap(":/images/laserBall3"));
         break;
     }

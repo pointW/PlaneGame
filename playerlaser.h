@@ -4,20 +4,17 @@
 #include "flyitem.h"
 #include "plane.h"
 #include "timer.h"
+#include "laser.h"
 
 class Plane;
 
-class LaserMain:public FlyItem
+class LaserMain:public Laser
 {
     Q_OBJECT
 public:
     LaserMain(Plane *plane);
 public slots:
-    void moveLaser();
     void levelUp(int l);
-private:
-    QPixmap *image;
-    int y;
 };
 
 class LaserBall:public FlyItem

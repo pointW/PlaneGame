@@ -10,6 +10,7 @@ Explosion::Explosion(int t)
     }
     xCount = 0;
     yCount = 0;
+    removeFlag = false;
 }
 
 Explosion::~Explosion()

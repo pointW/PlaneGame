@@ -6,7 +6,6 @@
 #include "playerlaser.h"
 #include "playermissile.h"
 #include "gamecontroller.h"
-#include "wingman.h"
 #include "timer.h"
 #include "lists.h"
 
@@ -42,9 +41,6 @@ public:
     void stopDown();
     void attackWithMissile();
     void handleSlop();
-    void transformToSuper();
-    void transformToNormal();
-    void setTransformationImages();
     void addBullet(int x, int y, int d);
     void removeBullet(PlayerBullet *b);
     void addMissile(int x, int y, double a);
@@ -63,11 +59,6 @@ public slots:
     AttackType getAttackType();
     void playerUnbeatable();
     void backToStraight();
-    void changeImageToSuper();
-    void changeImageToNormal();
-    void superState();
-//    void moveWingmanFront();
-//    void moveWingmanSide();
 
 signals:
     void refreshHP(int a);
@@ -101,11 +92,6 @@ private:
     int HP;
     int unbeatableTimes;
     int slopFlag;
-    bool transformingFlag;
-    bool superFlag;
-    int transformImagesFlag;
-    bool wingmanFlag;
-    int wingmanMoveFlag;
     QLinkedList<PlayerBullet*> currentPlayerBulletList;
     QLinkedList<PlayerMissile*> currentPlayerMissileList;
     QPixmap plane1;

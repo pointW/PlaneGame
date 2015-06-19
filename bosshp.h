@@ -11,10 +11,12 @@ class EnemyBoss;
 class BossHP : public QObject
 {
 public:
-    BossHP(EnemyBoss *boss);
+    BossHP(EnemyBoss *boss, int maxHP);
     ~BossHP();
 
+    void addToScene(QGraphicsScene *s);
     void setHP(double HP);
+    void setVisiable(bool b);
 
 private:
     QGraphicsPixmapItem *white;

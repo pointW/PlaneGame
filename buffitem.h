@@ -15,7 +15,6 @@ class BuffItem : public FlyItem
 {
     Q_OBJECT
 public:
-    BuffItem();
     BuffItem(BuffType t);
     ~BuffItem();
 
@@ -29,7 +28,6 @@ private:
     BuffType buffType;
     Direction direction;
     int directionChange;//方向改变次数
-    QTimer *deletetimer;
     int speed;
     int existCount;
 };

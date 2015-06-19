@@ -52,5 +52,6 @@
         <file alias="bossHP1">images/bossHP1.png</file>
         <file alias="bossHP2">images/bossHP2.png</file>
         <file alias="loading">images/loading.gif</file>
+        <file>images/laser4.png</file>
     </qresource>
 </RCC>

@@ -28,7 +28,6 @@ public:
     int getRandomNumber(int max);
 
 protected:
-    QGraphicsScene *scene;
     bool removeFlag;
 };
 

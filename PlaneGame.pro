@@ -28,13 +28,12 @@ SOURCES += main.cpp\
     score.cpp \
     playerlife.cpp \
     background.cpp \
-    wingman.cpp \
-    playerlightingball.cpp \
     timer.cpp \
     enemyboss.cpp \
     enemybullet.cpp \
     bosshp.cpp \
-    lists.cpp
+    lists.cpp \
+    laser.cpp
 
 HEADERS  += mainwindow.h \
     plane.h \
@@ -51,13 +50,12 @@ HEADERS  += mainwindow.h \
     score.h \
     playerlife.h \
     background.h \
-    wingman.h \
-    playerlightingball.h \
     timer.h \
     enemyboss.h \
     enemybullet.h \
     bosshp.h \
-    lists.h
+    lists.h \
+    laser.h
 
 RESOURCES += \
     res.qrc

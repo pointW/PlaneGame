@@ -17,12 +17,12 @@ Plane::Plane(GameController *game)
     setObjectName("player");
     setPixmap(plane3);
     setParent(game);
-    scene = game->getScene();
+    QGraphicsScene *scene = game->getScene();
     scene->addItem(this);
     scene->installEventFilter(this);
     gameController = game;
     setX(300);
-    setY(700);
+    setY(HEIGHT-100);
     setZValue(1);
     HP = 100;
     LeftFlag = false;
@@ -38,12 +38,9 @@ Plane::Plane(GameController *game)
 
     attackType = Bullet;
     attackLevel = 1;
-    missileLevel = 1;
+    missileLevel = 0;
     unbeatableTimes = 0;
     slopFlag = 0;
-    transformImagesFlag = 0;
-    superFlag = false;
-    transformingFlag = false;
 
     connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(playerCollisions()));
     connect(this, &Plane::refreshHP, game, &GameController::refreshPlayerHP);
@@ -62,43 +59,22 @@ Plane::~Plane()
 
 void Plane::handleSlop()
 {
-    if (!superFlag){
-        switch (slopFlag){
-        case -4:
-            setPixmap(plane1);
-            break;
-        case -2:
-            setPixmap(plane2);
-            break;
-        case 0:
-            setPixmap(plane3);
-            break;
-        case 2:
-            setPixmap(plane4);
-            break;
-        case 4:
-            setPixmap(plane5);
-            break;
-        }
-    }
-    else{
-        switch (slopFlag){
-        case -4:
-            setPixmap(QPixmap(":/images/playerSuper1"));
-            break;
-        case -2:
-            setPixmap(QPixmap(":/images/playerSuper2"));
-            break;
-        case 0:
-            setPixmap(QPixmap(":/images/playerSuper3"));
-            break;
-        case 2:
-            setPixmap(QPixmap(":/images/playerSuper4"));
-            break;
-        case 4:
-            setPixmap(QPixmap(":/images/playerSuper5"));
-            break;
-        }
+    switch (slopFlag){
+    case -4:
+        setPixmap(QPixmap(":/images/player1"));
+        break;
+    case -2:
+        setPixmap(QPixmap(":/images/player2"));
+        break;
+    case 0:
+        setPixmap(QPixmap(":/images/player3"));
+        break;
+    case 2:
+        setPixmap(QPixmap(":/images/player4"));
+        break;
+    case 4:
+        setPixmap(QPixmap(":/images/player5"));
+        break;
     }
 }
 
@@ -123,7 +99,7 @@ void Plane::posChangeLeft()
         setX(x()-10);
         emit playerMoved(Left);
     }
-    if (slopFlag>-4 && !transformingFlag){
+    if (slopFlag>-4){
         slopFlag--;
         handleSlop();
     }
@@ -135,7 +111,7 @@ void Plane::posChangeRight()
         setX(x()+10);
         emit playerMoved(Right);
     }
-    if (slopFlag<4 && !transformingFlag){
+    if (slopFlag<4){
         slopFlag++;
         handleSlop();
     }
@@ -277,7 +253,7 @@ void Plane::attackWithBullet()
 void Plane::attackWithLaser()
 {
     if (!laserFlag){
-        scene->addItem(laser);
+        QGraphicsItem::scene()->addItem(laser);
         laserFlag = true;
     }
 }
@@ -290,7 +266,7 @@ void Plane::stopAttack()
         bulletFlag = false;
     }
     if(laserFlag){
-        scene->removeItem(laser);
+        QGraphicsItem::scene()->removeItem(laser);
         laserFlag = false;
     }
     if (missileFlag){
@@ -404,12 +380,26 @@ void Plane::playerCollisions()
         else if (collidingItem->data(GD_Type) == GO_EnemyPlane){
             EnemyPlane *enemy = dynamic_cast<EnemyPlane *>(collidingItem);
             enemy->setRemoveFlag(true);
-            if (beatable && !superFlag){
+            if (beatable){
                 HP-=10;
                 emit refreshHP(HP);
                 if(HP<=0){
                     emit playerDestroyed(this);
                     deleteLater();
+                }
+            }
+        }
+        else if (collidingItem->data(GD_Type) == GO_EnemyBullet){
+//            if (collidingItem->collidesWithItem(this, Qt::ContainsItemShape)){
+            if (this->collidesWithItem(collidingItem)){
+                dynamic_cast<EnemyBullet*>(collidingItem)->setRemoveFlag(true);
+                if (beatable){
+                    HP-=10;
+                    emit refreshHP(HP);
+                    if(HP<=0){
+                        emit playerDestroyed(this);
+                        deleteLater();
+                    }
                 }
             }
         }
@@ -431,7 +421,6 @@ void Plane::attackWithMissile()
 
 void Plane::handleKeyPressed(QKeyEvent *event)
 {
-    qDebug()<<children().count();
     switch (event->key())
     {
     case Qt::Key_Left:
@@ -459,21 +448,6 @@ void Plane::handleKeyPressed(QKeyEvent *event)
     case Qt::Key_Q:
         createMissile();
         break;
-
-    case Qt::Key_W:
-        transformToSuper();
-        break;
-
-    case Qt::Key_E:
-        transformToNormal();
-        break;
-
-    case Qt::Key_R:
-        Wingman *l = new Wingman(x()-20-WINGMANWIDTH, y()+30, 1, "wingmanLeft", this);
-        Wingman *r = new Wingman(x()+20+PLAYERWIDTH, y()+30, 2, "wingmanRight", this);
-        scene->addItem(l);
-        scene->addItem(r);
-        wingmanFlag = true;
     }
 }
 
@@ -529,125 +503,6 @@ void Plane::playerUnbeatable()
         setVisible(visiable);
     }
 }
-
-void Plane::changeImageToSuper()
-{
-    if (transformImagesFlag<7){
-        transformImagesFlag++;
-        setTransformationImages();
-        if (wingmanFlag){
-            findChild<Wingman *>("wingmanRight")->setX(x()+20+boundingRect().width());
-        }
-    }
-    else if(transformImagesFlag==7){
-        disconnect(Timer::getTimer10(), SIGNAL(timeout()), this, SLOT(changeImageToSuper()));
-        transformingFlag = false;
-        superFlag = true;
-        connect(Timer::getTimer2(), SIGNAL(timeout()), this, SLOT(superState()));
-    }
-}
-
-void Plane::changeImageToNormal()
-{
-    if (transformImagesFlag>0){
-        transformImagesFlag--;
-        setTransformationImages();
-        if (wingmanFlag){
-            findChild<Wingman *>("wingmanRight")->setX(x()+20+boundingRect().width());
-        }
-    }
-    else if(transformImagesFlag==0){
-        disconnect(Timer::getTimer10(), SIGNAL(timeout()), this, SLOT(changeImageToNormal()));
-        transformingFlag = false;
-        superFlag = false;
-    }
-}
-
-void Plane::setTransformationImages()
-{
-    switch (transformImagesFlag){
-    case 0:
-        setPixmap(QPixmap(":/images/player3"));
-        break;
-    case 1:
-        setPixmap(QPixmap(":/images/transform1"));
-        break;
-    case 2:
-        setPixmap(QPixmap(":/images/transform2"));
-        break;
-    case 3:
-        setPixmap(QPixmap(":/images/transform3"));
-        break;
-    case 4:
-        setPixmap(QPixmap(":/images/transform4"));
-        break;
-    case 5:
-        setPixmap(QPixmap(":/images/transform5"));
-        break;
-    case 6:
-        setPixmap(QPixmap(":/images/transform6"));
-        break;
-    case 7:
-        setPixmap(QPixmap(":/images/playerSuper3"));
-        break;
-    }
-}
-
-void Plane::transformToSuper()
-{
-    if (!superFlag && !transformingFlag){
-        transformImagesFlag = 0;
-        connect(Timer::getTimer10(), SIGNAL(timeout()), this, SLOT(changeImageToSuper()));
-        transformingFlag = true;
-    }
-}
-
-void Plane::transformToNormal()
-{
-    if (superFlag && !transformingFlag){
-        transformImagesFlag = 7;
-        connect(Timer::getTimer10(), SIGNAL(timeout()), this, SLOT(changeImageToNormal()));
-        transformingFlag = true;
-    }
-}
-
-void Plane::superState()
-{
-//    if (superFlag){
-//        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), 0, this));
-////        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), 15, this));
-////        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), -15, this));
-//        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), 30, this));
-//        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), -30, this));
-////        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), 45, this));
-////        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), -45, this));
-//        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), 60, this));
-//        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), -60, this));
-////        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), 75, this));
-////        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), -75, this));
-//        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), 90, this));
-//        scene->addItem(new PlayerMissile(x()+(boundingRect().width()-MISSILEWIDTH)/2, y(), -90, this));
-//    }
-//    else {
-//        disconnect(Timer::getTimer2(), SIGNAL(timeout()), this, SLOT(superState()));
-//    }
-}
-
-//void Plane::moveWingmanFront()
-//{
-//    switch (wingmanMoveFlag){
-//    case 1:
-//        findChild<Wingman *>("wingmanLeft")->setX(x());
-//        findChild<Wingman *>("wingmanLeft")->setY(y());
-//        findChild<Wingman *>("wingmanRight")->setX(x()+12);
-//        break;
-//    case 2:
-//        findChild<Wingman *>("wingmanLeft")->setX(x());
-
-//    }
-//}
-
-
 
 
 

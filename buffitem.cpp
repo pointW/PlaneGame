@@ -5,14 +5,10 @@
 
 using namespace std;
 
-BuffItem::BuffItem()
-{
-
-}
-
 BuffItem::BuffItem(BuffType t)
 {
     setData(GD_Type, GO_BuffItem);
+    removeFlag = false;
     buffType = t;
     existCount = 0;
     switch(buffType){

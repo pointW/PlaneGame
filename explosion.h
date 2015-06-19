@@ -24,7 +24,6 @@ private:
     int xCount;
     int yCount;
     int type;
-    bool isDone;
 };
 
 #endif // EXPLOSION_H

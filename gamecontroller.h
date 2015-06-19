@@ -5,6 +5,7 @@
 #include <QKeyEvent>
 #include <QGraphicsView>
 #include <QObject>
+#include <QGraphicsTextItem>
 
 #include<stdio.h>
 #include<stdlib.h>
@@ -59,7 +60,7 @@ public slots:
     void refreshPlayerHP(int a);
     void createNewPlane();
     void getScore(int a);
-
+    void bossModel();
 
 private:
     QGraphicsScene *scene;
@@ -70,10 +71,10 @@ private:
     Score *score;
     PlayerLife *playerLife;
     Background *background;
-    int difficulty;
     QLinkedList<EnemyPlane*> currentEnemyPlaneList;
     QLinkedList<BuffItem*> currentBuffList;
     QLinkedList<Explosion*> currentExplosionList;
+    QLinkedList<EnemyBoss*> currentBossList;
 };
 
 #endif // GAMECONTROLLER_H

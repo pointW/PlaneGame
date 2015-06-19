@@ -5,7 +5,6 @@
 #include "constants.h"
 #include "playerbullet.h"
 #include "playermissile.h"
-#include "playerlightingball.h"
 #include "explosion.h"
 #include "timer.h"
 
@@ -17,7 +16,6 @@ class EnemyPlane:public FlyItem
 public:
     EnemyPlane();
     EnemyPlane(int t);
-    EnemyPlane(int a, QString name, GameController *game);
     ~EnemyPlane();
     void move();
     bool isHit();

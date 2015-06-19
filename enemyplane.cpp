@@ -9,6 +9,7 @@ EnemyPlane::EnemyPlane()
 
 EnemyPlane::EnemyPlane(int t)
 {
+    removeFlag = false;
     type = t;
     switch (t){
     case 1:
@@ -100,12 +101,6 @@ bool EnemyPlane::isHit(){
         else if (collidingItem->data(GD_Type) == GO_PlayerMissile){
             dynamic_cast<FlyItem *>(collidingItem)->setRemoveFlag(true);
             HP-=20;
-            return true;
-        }
-        else if (collidingItem->data(GD_Type) == GO_PlayerLightingBall){
-            HP-=20;
-            PlayerLightingBall *l = dynamic_cast<PlayerLightingBall *>(collidingItem);
-            l->deleteLater();
             return true;
         }
     }

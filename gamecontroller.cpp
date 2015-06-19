@@ -17,14 +17,15 @@ GameController::GameController(QGraphicsScene *s, QObject *parent) :
     Lists::createEnemyPlaneList();
     Lists::createBuffList();
     Lists::createExplosionList();
+    Lists::createBossList();
     srand((unsigned int)time(NULL));
-
-    difficulty = 1;
 
     playerHP = new PlayerHP(this);
     score = new Score(this);
     playerLife = new PlayerLife(this);
     background = new Background(this);
+
+    QTimer::singleShot(1000*60, this, SLOT(bossModel()));
 
     resume();
 }
@@ -40,7 +41,7 @@ void GameController::resume()
     connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(moveEnemy()));
     connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(moveBuff()));
     connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(showExplosion()));
-//    scene->addItem(new EnemyBoss(1, "enemy0", this));
+//    bossModel();
 }
 
 void GameController::addEnemy(int a)
@@ -122,7 +123,7 @@ void GameController::moveEnemy()
             explosion->setPos(e->x()-10, e->y()-10);
             currentExplosionList.append(explosion);
             scene->addItem(explosion);
-            switch(getRandomNumber(30)){
+            switch(getRandomNumber(25)){
             case 0:
                 if (plane->getAttackType()!=Laser){
                     BuffItem *buff = Lists::getBuff(TurnToLaser);
@@ -159,7 +160,7 @@ void GameController::moveEnemy()
                 currentBuffList.append(buff);
                 break;
             }
-            case 5:case 6:case 7:case 8:case 9:case 10:case 11:
+            case 5:case 6:case 7:case 8:case 9:case 10:
             {
                 BuffItem *buff = Lists::getBuff(Diamond);
                 buff->setParent(this);
@@ -170,6 +171,21 @@ void GameController::moveEnemy()
             }
             }
             removeEnemy(e);
+        }
+    }
+    foreach (EnemyBoss *boss, currentBossList){
+        if (boss->getRemoveFlag()){
+            boss->setVisible(false);
+            score->addScore(10000);
+            currentBossList.removeOne(boss);
+            boss->deleteLater();
+            QGraphicsTextItem *text = new QGraphicsTextItem();
+            scene->addItem(text);
+            text->setHtml("恭喜过关！");
+            text->setFont(QFont("AnyStyle", 50));
+            text->setDefaultTextColor(QColor(255, 0, 0));
+            text->setPos(200, 200);
+            text->setZValue(10);
         }
     }
 }
@@ -271,5 +287,16 @@ void GameController::createNewPlane()
 void GameController::getScore(int a)
 {
     score->addScore(a);
+}
+
+void GameController::bossModel()
+{
+    disconnect(Timer::getTimer1(), SIGNAL(timeout()), this, SLOT(createEnemyPlane()));
+    EnemyBoss *boss = Lists::getBoss(1);
+    currentBossList.append(boss);
+    scene->addItem(boss);
+    boss->setParent(this);
+    boss->setObjectName("enemy0");
+    boss->start();
 }
 

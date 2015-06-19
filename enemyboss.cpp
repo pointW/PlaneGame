@@ -2,22 +2,18 @@
 
 #include <QDebug>
 
-EnemyBoss::EnemyBoss(int a, QString name, GameController *game)
+EnemyBoss::EnemyBoss(int a)
 {
-    setParent(game);
-    setObjectName(name);
-
+    removeFlag = false;
     switch (a){
     case 1:
         setPixmap(QPixmap(":/images/boss1"));
-        HP = 5000;
-        maxHP = 5000;
+        HP = 2000;
+        maxHP = 2000;
         break;
     }
-    setX((LENGTH-boundingRect().width())/2);
-    setY(0);
-    connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(posChangeDown()));
-    bossHP = NULL;
+    type = a;
+    bossHP = new BossHP(this, maxHP);
     d = Left;
 }
 
@@ -26,16 +22,37 @@ EnemyBoss::~EnemyBoss()
 
 }
 
+void EnemyBoss::start()
+{
+    setX((LENGTH-boundingRect().width())/2);
+    setY(0);
+    connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(posChangeDown()));
+}
+
+void EnemyBoss::resetBoss()
+{
+    setParent(0);
+    bossHP->setVisiable(false);
+    HP = maxHP;
+    bossHP->setHP(maxHP);
+}
+
+int EnemyBoss::getType()
+{
+    return type;
+}
+
 void EnemyBoss::posChangeDown()
 {
     setY(y()+2);
     if (y()>=100){
+        bossHP->addToScene(QGraphicsItem::scene());
+        bossHP->setVisiable(true);
         disconnect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(posChangeDown()));
-        bossHP = new BossHP(this);
         connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(moveHorizontally()));
         connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(bossCollisions()));
         connect(Timer::getTimer(), SIGNAL(timeout()), this, SLOT(moveBullet()));
-        attack2();
+        attack1();
     }
 }
 
@@ -74,13 +91,15 @@ void EnemyBoss::bossCollisions()
             HP-=20;
             dynamic_cast<FlyItem *>(collidingItem)->setRemoveFlag(true);
         }
-        else if (collidingItem->data(GD_Type) == GO_PlayerLightingBall){
-            HP-=20;
-            dynamic_cast<PlayerLightingBall *>(collidingItem)->deleteLater();
-        }
     }
-    bossHP->setHP(HP);
-    qDebug()<<children().count();
+    if (HP<=0){
+        removeFlag = true;
+        bossHP->setVisiable(false);
+        return;
+    }
+    else{
+        bossHP->setHP(HP);
+    }
 }
 
 void EnemyBoss::moveBullet()
@@ -103,9 +122,15 @@ void EnemyBoss::attack1()
     QTimer::singleShot(2000, this, SLOT(stopAttackWithBullet1()));
 }
 
+void EnemyBoss::attack2()
+{
+    safeZone = 20;
+    connect(Timer::getTimer5(), SIGNAL(timeout()), this, SLOT(attackWithBullet2()));
+}
+
 void EnemyBoss::attackWithBullet1()
 {
-    for (int i = 0; i<=350; i+=10){
+    for (int i = 0; i<=340; i+=20){
         EnemyBullet *b = Lists::getEnemyBullet1();
         b->setPos(x()+boundingRect().width()/2, y()+boundingRect().height()/2);
         b->setAngle(i);
@@ -119,13 +144,7 @@ void EnemyBoss::attackWithBullet1()
 void EnemyBoss::stopAttackWithBullet1()
 {
     disconnect(Timer::getTimer5(), SIGNAL(timeout()), this, SLOT(attackWithBullet1()));
-}
-
-
-void EnemyBoss::attack2()
-{
-    safeZone = 20;
-    connect(Timer::getTimer5(), SIGNAL(timeout()), this, SLOT(attackWithBullet2()));
+    QTimer::singleShot(1000*3, this, SLOT(attack2()));
 }
 
 void EnemyBoss::attackWithBullet2()
@@ -150,6 +169,7 @@ void EnemyBoss::attackWithBullet2()
 void EnemyBoss::stopAttackWithBullet2()
 {
     disconnect(Timer::getTimer5(), SIGNAL(timeout()), this, SLOT(attackWithBullet2()));
+    QTimer::singleShot(1000*3, this, SLOT(attack1()));
 }
 
 void EnemyBoss::removeBullet(EnemyBullet *b)
@@ -161,4 +181,3 @@ void EnemyBoss::removeBullet(EnemyBullet *b)
         break;
     }
 }
-

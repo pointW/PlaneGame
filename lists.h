@@ -12,6 +12,7 @@ class EnemyBullet;
 class EnemyPlane;
 class BuffItem;
 class Explosion;
+class EnemyBoss;
 
 class Lists
 {
@@ -20,11 +21,10 @@ private:
     static QLinkedList<PlayerBullet*> playerBulletList;
     static QLinkedList<PlayerMissile*> playerMissileList;
     static QLinkedList<EnemyBullet*> enemyBullet1List;
-    static QLinkedList<EnemyPlane*> enemyPlane1List;
-    static QLinkedList<EnemyPlane*> enemyPlane2List;
-    static QLinkedList<EnemyPlane*> enemyPlane3List;
+    static QLinkedList<EnemyPlane*> enemyPlaneList;
     static QLinkedList<BuffItem*> buffList;
     static QLinkedList<Explosion*> explosionList;
+    static QLinkedList<EnemyBoss*> bossList;
 public:
     static void createPlayerBulletList();
     static PlayerBullet* getPlayerBullet();
@@ -49,6 +49,10 @@ public:
     static void createExplosionList();
     static Explosion* getExplosion();
     static void recoverExplosion(Explosion *e);
+
+    static void createBossList();
+    static EnemyBoss* getBoss(int i);
+    static void recoverBoss(EnemyBoss *boss);
 };
 
 #endif // LISTS_H
